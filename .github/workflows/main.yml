@@ -1,0 +1,54 @@
+name: Deploy Bright Gym App
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy_production:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Connect with VPS via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            # Create and move to the specific app directory
+            mkdir -p apps/bright-gym-app && cd apps/bright-gym-app
+            
+            # Check if repo exists, otherwise clone
+            if [ -d ".git" ]; then
+              echo "Repository exists. Pulling latest changes..."
+              git stash
+              git pull origin master
+            else
+              echo "Cloning repository..."
+              git clone -b master https://github.com/yonathanth/stichwithgoogle-bright.git .
+            fi
+          
+            # Install dependencies and build
+            echo "Installing dependencies..."
+            npm install --force
+            echo "Building application..."
+            npm run build
+
+            # PM2 Process Management
+            pid=$(pm2 pid "bright-gym-app" 2>/dev/null)
+            if [ -n "$pid" ] && [ "$pid" != "0" ]; then
+              echo "Reloading bright-gym-app..."
+              pm2 reload "bright-gym-app"
+              pm2 save
+            else
+              echo "Starting new PM2 process for bright-gym-app..."
+              pm2 start npm --name "bright-gym-app" -- start
+              pm2 startup
+              pm2 save
+            fi

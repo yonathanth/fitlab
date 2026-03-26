@@ -1,0 +1,10 @@
+# Robots.txt for Fit Lab
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+Crawl-delay: 1
+
+Sitemap: https://fitlab.et/sitemap.xml

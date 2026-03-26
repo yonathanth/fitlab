@@ -1,0 +1,211 @@
+@import "tailwindcss";
+
+:root {
+  /* Matches fixed header bar height (closed); keep hero offset in sync */
+  --site-header: 5rem;
+}
+
+@theme {
+  /* Fit Lab — yellow / brutalist dark */
+  --color-primary: #ffff00;
+  --color-on-primary: #000000;
+  --color-background: #000000;
+  --color-on-background: #ffffff;
+  --color-surface: #121212;
+  --color-surface-bright: #1a1a1a;
+  --color-outline: #333333;
+
+  /* Back-compat tokens still used in older pages/components */
+  --color-background-light: var(--color-background);
+  --color-background-dark: #0e0e0e;
+  --color-surface-container-low: #131313;
+  --color-surface-container: #191919;
+  --color-surface-container-high: #1f1f1f;
+  --color-surface-container-highest: #262626;
+  --color-surface-variant: #262626;
+  --color-on-surface: #ffffff;
+  --color-on-surface-variant: #ababab;
+  --color-outline-variant: #484848;
+  --color-secondary-container: #ffff00;
+  --color-on-secondary-container: #333300;
+
+  --color-surface-dark: #191919;
+  --color-surface-dark-lighter: #262626;
+  --color-card-dark: #191919;
+  --color-border-dark: #484848;
+  --color-surface-border: #484848;
+
+  --radius: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-full: 9999px;
+}
+
+/* Custom utility classes for hyphenated color names */
+@layer utilities {
+  .bg-background {
+    background-color: var(--color-background);
+  }
+
+  .text-on-background {
+    color: var(--color-on-background);
+  }
+
+  .bg-background-light {
+    background-color: var(--color-background-light);
+  }
+
+  .bg-background-dark {
+    background-color: var(--color-background-dark);
+  }
+
+  .bg-surface-dark {
+    background-color: var(--color-surface-dark);
+  }
+
+  .bg-surface-dark-lighter {
+    background-color: var(--color-surface-dark-lighter);
+  }
+
+  .border-surface-dark-lighter {
+    border-color: var(--color-surface-dark-lighter);
+  }
+
+  .border-surface-dark {
+    border-color: var(--color-surface-dark);
+  }
+
+  .bg-card-dark {
+    background-color: var(--color-card-dark);
+  }
+
+  .border-border-dark {
+    border-color: var(--color-border-dark);
+  }
+
+  .border-surface-border {
+    border-color: var(--color-surface-border);
+  }
+
+  .font-headline {
+    font-family: var(--font-headline), sans-serif;
+  }
+
+  .font-body {
+    font-family: var(--font-headline), sans-serif;
+  }
+}
+
+body {
+  font-family: var(--font-headline), ui-sans-serif, sans-serif;
+}
+
+::selection {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.text-outline {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+  color: transparent;
+}
+
+.kinetic-border {
+  border-left: 8px solid var(--color-primary);
+}
+
+.brutalist-shadow {
+  box-shadow: 8px 8px 0px 0px var(--color-primary);
+}
+
+.marquee {
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.kinetic-gradient {
+  background: linear-gradient(135deg, #ffff00 0%, #eaea00 100%);
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(255, 255, 0, 0.4);
+}
+
+/* Hero: keep subject visible; fade content side for readability */
+.hero-gradient {
+  background: linear-gradient(
+    to right,
+    rgba(14, 14, 14, 1) 0%,
+    rgba(14, 14, 14, 0.55) 42%,
+    rgba(14, 14, 14, 0.12) 100%
+  );
+}
+
+@media (max-width: 768px) {
+  .hero-gradient {
+    background: linear-gradient(
+      to bottom,
+      rgba(14, 14, 14, 0.35) 0%,
+      rgba(14, 14, 14, 0.75) 45%,
+      rgba(14, 14, 14, 0.92) 100%
+    );
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffff00;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Shared max-width + horizontal padding for public pages */
+.site-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 80rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .site-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
