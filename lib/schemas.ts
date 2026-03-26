@@ -58,7 +58,7 @@ export const organizationSchema = (): BaseSchema & {
   description:
     "Performance gym in Koye Feche, Addis Ababa — HIIT, strength, recovery, and combat conditioning.",
   url: "https://fitlab.et",
-  logo: "https://fitlab.et/logo-bright.png",
+  logo: "https://placehold.co/512x512/png?text=Logo",
   image: "https://fitlab.et/og-image.png",
   sameAs: ["https://fitlab.et"],
   contactPoint: {

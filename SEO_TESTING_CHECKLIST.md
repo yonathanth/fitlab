@@ -1,4 +1,4 @@
-# SEO Testing Checklist - Bright Gym
+# SEO Testing Checklist - Fitlab Gym
 
 ## 🧪 Pre-Launch Testing
 
@@ -30,12 +30,12 @@
 
 #### Page Titles
 - [ ] All titles are 50-60 characters
-- [ ] Include brand name "Bright Gym"
+- [ ] Include brand name "Fitlab Gym"
 - [ ] Include primary keyword
 - [ ] Test pages:
-  - [ ] Homepage: "Bright Gym - Premium Fitness in Addis Ababa | Membership Plans & Classes"
-  - [ ] Services: "Membership Plans - Bright Gym | Starter, Athlete & Elite Plans"
-  - [ ] About: "About Bright Gym - Our Story, Team & Mission | Premium Fitness"
+  - [ ] Homepage: "Fitlab Gym - Premium Fitness in Addis Ababa | Membership Plans & Classes"
+  - [ ] Services: "Membership Plans - Fitlab Gym | Starter, Athlete & Elite Plans"
+  - [ ] About: "About Fitlab Gym - Our Story, Team & Mission | Premium Fitness"
   - [ ] Contact: [Add after creating]
   - [ ] FAQ: [Add after creating]
 
@@ -147,7 +147,7 @@
 ### Structured Data Testing
 
 #### Organization Schema
-- [ ] Name: "Bright Gym"
+- [ ] Name: "Fitlab Gym"
 - [ ] URL: "https://brightgymfitness.com"
 - [ ] Logo: Valid image URL
 - [ ] ContactPoint: Valid phone format

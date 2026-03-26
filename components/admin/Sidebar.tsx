@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 interface NavItem {
@@ -49,17 +48,13 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           {/* Header */}
           <div className="p-5 border-b border-surface-dark-lighter">
             <Link href="/admin/dashboard" className="flex items-center gap-3" onClick={onClose}>
-              <div className="size-10 relative shrink-0">
-                <Image
-                  src="/logo-bright.png"
-                  alt="Bright Gym"
-                  width={40}
-                  height={40}
-                  className="w-full h-full object-contain"
-                />
+              <div className="size-10 shrink-0 bg-surface-dark-lighter border border-outline-variant flex items-center justify-center">
+                <span className="text-[10px] font-black uppercase tracking-widest text-primary">
+                  Logo
+                </span>
               </div>
               <div>
-                <span className="text-white font-bold text-lg">Bright Gym</span>
+                <span className="text-white font-bold text-lg">Fitlab Gym</span>
                 <p className="text-white/60 text-xs">Admin Panel</p>
               </div>
             </Link>
@@ -92,16 +87,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           {/* Branding */}
           <div className="p-4 border-t border-surface-dark-lighter">
             <Link href="/admin/dashboard" className="flex items-center gap-3" onClick={onClose}>
-              <div className="size-10 relative shrink-0">
-                <Image
-                  src="/logo-bright.png"
-                  alt="Bright Gym"
-                  width={40}
-                  height={40}
-                  className="w-full h-full object-contain"
-                />
+              <div className="size-10 shrink-0 bg-surface-dark-lighter border border-outline-variant flex items-center justify-center">
+                <span className="text-[10px] font-black uppercase tracking-widest text-primary">
+                  Logo
+                </span>
               </div>
-              <span className="text-white font-bold text-lg">Bright Gym</span>
+              <span className="text-white font-bold text-lg">Fitlab Gym</span>
             </Link>
           </div>
         </div>

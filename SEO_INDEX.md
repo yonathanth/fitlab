@@ -2,7 +2,7 @@
 
 ## Welcome to Your SEO Implementation
 
-This is the complete index of all SEO-related files for **Bright Gym** (brightgymfitness.com). Start here to navigate the documentation.
+This is the complete index of all SEO-related files for **Fitlab Gym** (brightgymfitness.com). Start here to navigate the documentation.
 
 ---
 

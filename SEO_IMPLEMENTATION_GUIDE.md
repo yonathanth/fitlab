@@ -1,8 +1,8 @@
-# SEO Implementation Guide - Bright Gym
+# SEO Implementation Guide - Fitlab Gym
 
 ## Overview
 
-This guide documents the comprehensive SEO implementation using JSON-LD structured data (schema.org) for the Bright Gym Next.js frontend at **brightgymfitness.com**.
+This guide documents the comprehensive SEO implementation using JSON-LD structured data (schema.org) for the Fitlab Gym Next.js frontend at **brightgymfitness.com**.
 
 ---
 
@@ -95,7 +95,7 @@ All pages now include:
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Bright Gym",
+  "name": "Fitlab Gym",
   "url": "https://brightgymfitness.com",
   "logo": "https://brightgymfitness.com/logo.png",
   "contactPoint": {
@@ -111,7 +111,7 @@ All pages now include:
 {
   "@context": "https://schema.org",
   "@type": "Product",
-  "name": "The Athlete - Bright Gym Membership",
+  "name": "The Athlete - Fitlab Gym Membership",
   "price": "3500",
   "priceCurrency": "ETB",
   "aggregateRating": {
@@ -127,7 +127,7 @@ All pages now include:
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": "Bright Gym",
+  "name": "Fitlab Gym",
   "openingHoursSpecification": {
     "@type": "OpeningHoursSpecification",
     "dayOfWeek": ["Monday", "Tuesday", "Wednesday"],
@@ -152,7 +152,7 @@ import { productSchema, breadcrumbSchema } from "@/lib/schemas";
 2. Add metadata export:
 ```typescript
 export const metadata: Metadata = {
-  title: "Page Title - Bright Gym",
+  title: "Page Title - Fitlab Gym",
   description: "Page description...",
 };
 ```

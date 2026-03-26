@@ -1,4 +1,4 @@
-# SEO Quick Reference - Bright Gym
+# SEO Quick Reference - Fitlab Gym
 
 ## 🎯 One-Page SEO Overview
 
@@ -68,7 +68,7 @@ import type { Metadata } from "next";
 **Step 2:** Add metadata
 ```typescript
 export const metadata: Metadata = {
-  title: "Page Title - Bright Gym",
+  title: "Page Title - Fitlab Gym",
   description: "Compelling description under 160 chars",
 };
 ```

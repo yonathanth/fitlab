@@ -79,7 +79,7 @@ SEO_QUICK_REFERENCE.md            ← Quick lookup guide
 
 ### Homepage
 ```
-✓ Business: Bright Gym
+✓ Business: Fitlab Gym
 ✓ Type: LocalBusiness + Organization
 ✓ Rating: 4.8/5 (145 reviews)
 ✓ Breadcrumb: Home
@@ -181,7 +181,7 @@ import { productSchema } from "@/lib/schemas";
 **Step 2:** Add metadata
 ```typescript
 export const metadata: Metadata = {
-  title: "Page Title - Bright Gym",
+  title: "Page Title - Fitlab Gym",
   description: "Description under 160 chars",
 };
 ```
@@ -286,7 +286,7 @@ After implementing this SEO:
 
 ## ✨ Summary
 
-Your Bright Gym website now has:
+Your Fitlab Gym website now has:
 - ✅ Professional structured data (JSON-LD)
 - ✅ Complete metadata on all pages
 - ✅ Search engine optimization
