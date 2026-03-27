@@ -1,4 +1,4 @@
-name: Deploy Bright Gym App
+name: Deploy Fitlab Gym App
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             # Create and move to the specific app directory
-            mkdir -p apps/bright-gym-app && cd apps/bright-gym-app
+            mkdir -p apps/fitlab-gym-app && cd apps/fitlab-gym-app
             
             # Check if repo exists, otherwise clone
             if [ -d ".git" ]; then
@@ -31,7 +31,7 @@ jobs:
               git pull origin master
             else
               echo "Cloning repository..."
-              git clone -b master https://github.com/yonathanth/stichwithgoogle-bright.git .
+              git clone -b master https://github.com/yonathanth/fitlab.git .
             fi
           
             # Install dependencies and build
@@ -41,14 +41,14 @@ jobs:
             npm run build
 
             # PM2 Process Management
-            pid=$(pm2 pid "bright-gym-app" 2>/dev/null)
+            pid=$(pm2 pid "fitlab-gym-app" 2>/dev/null)
             if [ -n "$pid" ] && [ "$pid" != "0" ]; then
-              echo "Reloading bright-gym-app..."
-              pm2 reload "bright-gym-app"
+              echo "Reloading fitlab-gym-app..."
+              pm2 reload "fitlab-gym-app"
               pm2 save
             else
-              echo "Starting new PM2 process for bright-gym-app..."
-              pm2 start npm --name "bright-gym-app" -- start
+              echo "Starting new PM2 process for fitlab-gym-app..."
+              pm2 start npm --name "fitlab-gym-app" -- start
               pm2 startup
               pm2 save
             fi
