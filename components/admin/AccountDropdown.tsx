@@ -18,7 +18,7 @@ export default function AccountDropdown() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { user, logout, updateProfile } = useAuth();
 
-  // Close dropdown when clicking outside
+  // Close dropdown when clicking outside of the dropdown
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
