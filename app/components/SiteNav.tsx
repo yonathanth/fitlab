@@ -21,7 +21,8 @@ export function SiteNav() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    setOpen(false);
+    const id = setTimeout(() => setOpen(false), 0);
+    return () => clearTimeout(id);
   }, [pathname]);
 
   return (

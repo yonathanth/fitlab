@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Header from "../components/Header";
-import Footer from "../components/Footer";
+import { SiteFooter } from "../components/SiteFooter";
 import { faqContent } from "@/lib/faq-content";
 
 export default function FAQPage() {
@@ -128,7 +128,7 @@ export default function FAQPage() {
                 </div>
                 <div className="flex w-full flex-col gap-4 sm:flex-row md:w-auto">
                   <a
-                    href="https://t.me/Brightgym2025"
+                    href="https://www.tiktok.com/@yaredbarch"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-headline flex min-w-[200px] items-center justify-center gap-2 bg-primary px-6 py-3 font-black uppercase tracking-wider text-on-primary transition-colors hover:bg-yellow-400 hover:text-black"
@@ -136,7 +136,7 @@ export default function FAQPage() {
                     <span className="material-symbols-outlined text-[20px]">
                       chat
                     </span>
-                    <span>Telegram</span>
+                    <span>TikTok</span>
                   </a>
                   <a
                     href="tel:+251977363636"
@@ -154,7 +154,7 @@ export default function FAQPage() {
         </section>
       </main>
 
-      <Footer />
+      <SiteFooter />
     </div>
   );
 }

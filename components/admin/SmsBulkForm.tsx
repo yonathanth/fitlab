@@ -38,7 +38,7 @@ export default function SmsBulkForm({ onSuccess }: SmsBulkFormProps) {
         let hasMore = true;
 
         while (hasMore) {
-          const query: any = {
+          const query: Record<string, unknown> = {
             page,
             limit,
           };

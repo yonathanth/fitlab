@@ -23,6 +23,15 @@ interface BaseSchema {
   "@type": SchemaType;
 }
 
+import {
+  ADDRESS_SCHEMA,
+  OPENING_HOURS_SCHEMA,
+  PHONE_E164,
+  SITE_BASE_URL,
+  SITE_NAME,
+  SOCIAL_FALLBACK_URL,
+} from "@/lib/site";
+
 /**
  * Organization Schema - Core identity of the gym business
  */
@@ -54,26 +63,26 @@ export const organizationSchema = (): BaseSchema & {
 } => ({
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Fit Lab",
+  name: SITE_NAME,
   description:
     "Performance gym in Koye Feche, Addis Ababa — HIIT, strength, recovery, and combat conditioning.",
-  url: "https://fitlab.et",
-  logo: "https://placehold.co/512x512/png?text=Logo",
-  image: "https://fitlab.et/og-image.png",
-  sameAs: ["https://fitlab.et"],
+  url: SITE_BASE_URL,
+  logo: `${SITE_BASE_URL}/logo-bright.png`,
+  image: `${SITE_BASE_URL}/og-image.png`,
+  sameAs: [SOCIAL_FALLBACK_URL],
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "Customer Support",
-    telephone: "+251975427575",
+    telephone: PHONE_E164,
     areaServed: "ET",
   },
   address: [
     {
       "@type": "PostalAddress",
-      streetAddress: "Koye Feche",
-      addressLocality: "Addis Ababa",
+      streetAddress: ADDRESS_SCHEMA.streetAddress,
+      addressLocality: ADDRESS_SCHEMA.addressLocality,
       postalCode: "1000",
-      addressCountry: "ET",
+      addressCountry: ADDRESS_SCHEMA.addressCountry,
     },
   ],
   foundingDate: "2020",
@@ -121,19 +130,19 @@ export const localBusinessSchema = (): BaseSchema & {
 } => ({
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  name: "Fit Lab",
-  image: "https://fitlab.et/og-image.png",
+  name: SITE_NAME,
+  image: `${SITE_BASE_URL}/og-image.png`,
   description:
     "Elite performance training in Koye Feche, Addis Ababa — strength, HIIT, yoga, combat fit.",
-  url: "https://fitlab.et",
-  telephone: "+251975427575",
+  url: SITE_BASE_URL,
+  telephone: PHONE_E164,
   address: [
     {
       "@type": "PostalAddress",
-      streetAddress: "Koye Feche",
-      addressLocality: "Addis Ababa",
+      streetAddress: ADDRESS_SCHEMA.streetAddress,
+      addressLocality: ADDRESS_SCHEMA.addressLocality,
       postalCode: "1000",
-      addressCountry: "ET",
+      addressCountry: ADDRESS_SCHEMA.addressCountry,
     },
   ],
   geo: [
@@ -143,26 +152,14 @@ export const localBusinessSchema = (): BaseSchema & {
       longitude: 38.768,
     },
   ],
-  openingHoursSpecification: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "06:00",
-      closes: "22:00",
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: "Saturday",
-      opens: "06:00",
-      closes: "20:45",
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: "Sunday",
-      opens: "06:00",
-      closes: "10:00",
-    },
-  ],
+  openingHoursSpecification: OPENING_HOURS_SCHEMA.map((h) => ({
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: (Array.isArray(h.dayOfWeek)
+      ? [...h.dayOfWeek]
+      : h.dayOfWeek) as string | string[],
+    opens: h.opens,
+    closes: h.closes,
+  })),
   priceRange: "$$",
   aggregateRating: {
     "@type": "AggregateRating",

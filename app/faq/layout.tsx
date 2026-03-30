@@ -3,23 +3,22 @@ import { SchemaComponent } from "@/lib/schema-component";
 import { faqSchema } from "@/lib/schemas";
 import { breadcrumbSchema } from "@/lib/schemas";
 import { faqContent } from "@/lib/faq-content";
-
-const BASE = "https://fitlab.et";
+import { SITE_BASE_URL, SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "FAQ — Fit Lab | Memberships, payments, hours",
+  title: `FAQ — ${SITE_NAME} | Memberships, payments, hours`,
   description:
-    "Answers about Fit Lab in Koye Feche: hours, memberships, payments, trainers, parking, and more.",
+    `Answers about ${SITE_NAME} in Koye Feche: hours, memberships, payments, trainers, parking, and more.`,
   keywords: [
-    "Fit Lab FAQ",
+    "Fitlab Gym and Spa FAQ",
     "gym hours Addis Ababa",
     "membership freeze",
     "Koye Feche gym",
   ],
   openGraph: {
-    title: "FAQ — Fit Lab",
+    title: `FAQ — ${SITE_NAME}`,
     description: "Memberships, payments, trainers, and gym access.",
-    url: `${BASE}/faq`,
+    url: `${SITE_BASE_URL}/faq`,
   },
 };
 
@@ -36,8 +35,8 @@ export default function FAQLayout({
     <>
       <SchemaComponent
         schema={breadcrumbSchema([
-          { name: "Home", url: BASE },
-          { name: "FAQ", url: `${BASE}/faq` },
+          { name: "Home", url: SITE_BASE_URL },
+          { name: "FAQ", url: `${SITE_BASE_URL}/faq` },
         ])}
       />
       <SchemaComponent schema={faqSchemaData} />

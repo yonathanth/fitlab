@@ -3,6 +3,7 @@ import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { MultipleSchemaComponent } from "@/lib/schema-component";
 import { organizationSchema, localBusinessSchema } from "@/lib/schemas";
+import { SITE_BASE_URL, SITE_NAME } from "@/lib/site";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-headline",
@@ -11,31 +12,32 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Fit Lab — Elite performance | Koye Feche, Addis Ababa",
+  metadataBase: new URL(SITE_BASE_URL),
+  title: `${SITE_NAME} — Elite performance | Koye Feche, Addis Ababa`,
   description:
-    "Train without limits at Fit Lab. HIIT, strength lab, recovery yoga, and combat fit — Koye Feche, Addis Ababa.",
+    `Train without limits at ${SITE_NAME}. HIIT, strength lab, recovery yoga, and combat fit — Koye Feche, Addis Ababa.`,
   keywords: [
     "gym Koye Feche",
-    "Fit Lab Addis Ababa",
+    "Fitlab Gym and Spa Addis Ababa",
     "HIIT gym",
     "strength training",
     "membership",
     "performance gym",
   ],
   robots: "index, follow",
-  authors: [{ name: "Fit Lab" }],
+  authors: [{ name: SITE_NAME }],
   openGraph: {
     type: "website",
-    url: "https://fitlab.et",
-    title: "Fit Lab — Train without limits",
+    url: SITE_BASE_URL,
+    title: `${SITE_NAME} — Train without limits`,
     description: "Performance programming in Koye Feche, Addis Ababa.",
     images: [
       {
-        url: "https://fitlab.et/og-image.png",
+        url: "/og-image.png",
         type: "image/png",
         width: 1080,
         height: 880,
-        alt: "Fit Lab — Koye Feche, Addis Ababa",
+        alt: `${SITE_NAME} — Koye Feche, Addis Ababa`,
       },
     ],
   },
@@ -43,10 +45,18 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@fitlab",
     creator: "@fitlab",
-    images: ["https://fitlab.et/og-image.png"],
+    images: ["/og-image.png"],
   },
   alternates: {
-    canonical: "https://fitlab.et",
+    canonical: SITE_BASE_URL,
+  },
+  icons: {
+    icon: [
+      { url: "/favicon/favicon.ico" },
+      { url: "/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/favicon/apple-touch-icon.png", sizes: "180x180" }],
   },
 };
 

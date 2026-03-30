@@ -1,8 +1,8 @@
-# SEO Implementation Guide - Fitlab Gym
+# SEO Implementation Guide - Fitlab Gym and Spa
 
 ## Overview
 
-This guide documents the comprehensive SEO implementation using JSON-LD structured data (schema.org) for the Fitlab Gym Next.js frontend at **brightgymfitness.com**.
+This guide documents the comprehensive SEO implementation using JSON-LD structured data (schema.org) for the Fitlab Gym and Spa Next.js frontend at **fitlabgymandspa.com**.
 
 ---
 
@@ -96,8 +96,8 @@ All pages now include:
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Fitlab Gym",
-  "url": "https://brightgymfitness.com",
-  "logo": "https://brightgymfitness.com/logo.png",
+  "url": "https://fitlabgymandspa.com",
+  "logo": "https://fitlabgymandspa.com/logo-bright.png",
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "Customer Support",
@@ -307,7 +307,7 @@ bright/
 ---
 
 **Last Updated:** 2026-01-24
-**Domain:** brightgymfitness.com
+**Domain:** fitlabgymandspa.com
 **Framework:** Next.js 16.1.1
 
 

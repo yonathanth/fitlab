@@ -1,4 +1,4 @@
-# SEO Testing Checklist - Fitlab Gym
+# SEO Testing Checklist - Fitlab Gym and Spa
 
 ## 🧪 Pre-Launch Testing
 
@@ -6,7 +6,7 @@
 
 #### 1. Google Rich Results Test
 - [ ] Visit: https://search.google.com/test/rich-results
-- [ ] Enter: `https://brightgymfitness.com`
+- [ ] Enter: `https://fitlabgymandspa.com`
 - [ ] Verify Organization schema appears
 - [ ] Verify LocalBusiness schema appears
 - [ ] Check for any errors or warnings
@@ -30,12 +30,12 @@
 
 #### Page Titles
 - [ ] All titles are 50-60 characters
-- [ ] Include brand name "Fitlab Gym"
+- [ ] Include brand name "Fitlab Gym and Spa"
 - [ ] Include primary keyword
 - [ ] Test pages:
-  - [ ] Homepage: "Fitlab Gym - Premium Fitness in Addis Ababa | Membership Plans & Classes"
-  - [ ] Services: "Membership Plans - Fitlab Gym | Starter, Athlete & Elite Plans"
-  - [ ] About: "About Fitlab Gym - Our Story, Team & Mission | Premium Fitness"
+  - [ ] Homepage: "Fitlab Gym and Spa - Premium Fitness in Addis Ababa | Membership Plans & Classes"
+  - [ ] Services: "Membership Plans - Fitlab Gym and Spa | Starter, Athlete & Elite Plans"
+  - [ ] About: "About Fitlab Gym and Spa - Our Story, Team & Mission | Premium Fitness"
   - [ ] Contact: [Add after creating]
   - [ ] FAQ: [Add after creating]
 
@@ -148,7 +148,7 @@
 
 #### Organization Schema
 - [ ] Name: "Fitlab Gym"
-- [ ] URL: "https://brightgymfitness.com"
+- [ ] URL: "https://fitlabgymandspa.com"
 - [ ] Logo: Valid image URL
 - [ ] ContactPoint: Valid phone format
 - [ ] Address: Complete and valid
@@ -333,7 +333,7 @@
 ---
 
 **Last Updated:** 2026-01-24
-**Domain:** brightgymfitness.com
+**Domain:** fitlabgymandspa.com
 **Status:** Ready for Testing
 
 

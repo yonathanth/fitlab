@@ -3,30 +3,28 @@ import { SchemaComponent } from "@/lib/schema-component";
 import { breadcrumbSchema } from "@/lib/schemas";
 import type { Metadata } from "next";
 import { SiteNav } from "../components/SiteNav";
-
-const BASE = "https://fitlab.et";
+import { SiteFooter } from "../components/SiteFooter";
+import { SITE_BASE_URL, SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "About Fit Lab — Team & Mission | Koye Feche, Addis Ababa",
+  title: `About ${SITE_NAME} — Team & Mission | Koye Feche, Addis Ababa`,
   description:
-    "Meet the coaches behind Fit Lab in Koye Feche, Addis Ababa. Performance training, strength, HIIT, and recovery — built for athletes who show up.",
+    `Meet the team behind ${SITE_NAME} in Koye Feche, Addis Ababa. Performance training, strength, HIIT, and recovery — built for athletes who show up.`,
   keywords: [
-    "about Fit Lab",
+    "about Fitlab Gym and Spa",
     "gym Koye Feche",
     "fitness trainers Addis Ababa",
     "HIIT gym",
     "strength training",
   ],
   openGraph: {
-    title: "About Fit Lab — The training floor",
+    title: `About ${SITE_NAME} — The training floor`,
     description: "Elite programming and coaches in Koye Feche, Addis Ababa.",
-    url: `${BASE}/about`,
+    url: `${SITE_BASE_URL}/about`,
   },
 };
 
 export default function AboutPage() {
-  const currentYear = new Date().getFullYear();
-
   return (
     <div className="bg-background text-on-background font-body selection:bg-primary selection:text-on-primary">
       <SiteNav />
@@ -81,8 +79,8 @@ export default function AboutPage() {
               <div className="brutalist-shadow relative aspect-video overflow-hidden bg-surface">
                 <img
                   alt="Training at Fit Lab"
-                  className="absolute inset-0 h-full w-full object-cover grayscale opacity-70"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAypHCKA2wkbSQW5MJ-9Kk_KRvsSSfjRw6edahmzda33t6axAFd-fj-GJgL690V8EAx-zzxbjUwApMnf5_jVlGlrDMfjFzpRY0vmuQrNQjQU3VHE7WzskYBwuaW6mtcD5wsjzF8f66809yBrEJp88N6BsWR2rzSTNii9gtlAEMp3KVaI7amwTP9_o5vUemN7DPpgEEcIUisQnAyhlNFYPoDwHTKM0KFbtV-w941GSUxGn34QvozBVpeCHBRTosmiSy9PLRlWxnskkk"
+                  className="absolute inset-0 h-full w-full object-cover opacity-70"
+                  src="/story.jpg"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-80" />
               </div>
@@ -187,34 +185,58 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {[
                 {
-                  name: "Dawit Kebede",
-                  role: "Head Coach",
-                  body: "Functional strength and conditioning.",
-                  img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBv71iVhg12k8rkHwH6iTeEhyZKtA9NXGvbhRP7QtfhxF4zsd8NVo24eNw3bSPVlKbsKrm3TPYo_amHcxQZxFCXoYt9zqQ7pgiBknIwo4hzoAArT8kpPH86HaZ0BgMbihKKlvqUjKyu-Af8oyY8IUuq7kwzg2JbbknWB9Qs03oP9bGm2fRbZvKYdwnEbCVZQIOQf6yjKt2CVOEe6E0CgAxa2acVV1Pnn3TAvqcvFbaBLs3qWCBFflcDeo5ZcbcEyezVRg7ZnMM6CAU",
+                  name: "Yared",
+                  role: "Founder and CEO",
+                  body: "Leads Fitlab operations and ensures a great experience for every member.",
+                  img: "/Yared.jpg",
                 },
                 {
-                  name: "Sara Tesfaye",
-                  role: "Yoga & Mobility",
-                  body: "Balance and flexibility for your routine.",
-                  img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDvZnuDIFNDyl0YBYPyhmnvm_-L_bnuPmknX8xehmFjT5_2gjmnfDMWmOLJ8P5eW0RiD6luFJKFrscbyL3sD21yqJq6PCkTCzo2MZfWJ9U06gtnDDvMWwDNVyRXAIsbgHmc8WFjlRa1EoEXJHBwWkJ8sqY_6IDRkv-d0m2owwyFpoF5d9ZTP3iNtS3gD9413r8owtY3GDWSDLeg-jZdq-PpLkmbdwiYH2vOkk9rfG_zymRxD1VN3BmIgjY_m7_f6cE2M9TYnv_QzI4",
+                  name: "Henok",
+                  role: "Co-founder",
+                  body: "Supports daily operations and coordinates the team across programs.",
+                  img: "/Henok.jpg",
                 },
                 {
-                  name: "Michael Alemu",
-                  role: "HIIT Specialist",
-                  body: "High-energy workouts to build endurance.",
-                  img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAbyVimiohS3_BIQdPVh-F50VZJeccgNELawx1bLDbftpEafrzVBs3W-4cszYgSNuB2kaMX7Uw6VHcWmiv3RykenGvzh3sAwEERS7z6tcuiOcVOQ0LhXzUKPRUGSQ9QTLfAoh6DP-Gwv8oeUBCwNI0lm7mxuYSMhXzHDawKMiZg4A8g18xJGVdgLycXdqqvsi_xZdU0OQUkvQHy05aNXy3rzKt1BqHHAzwLxyZETwEeku412B0KKYCMf5Tfz_ueIsbPOUlUJ0ABw6w",
+                  name: "Kidist",
+                  role: "General Manager",
+                  body: "Keeps schedules on track and helps members stay consistent.",
+                  img: "/Kidist.jpg",
                 },
                 {
-                  name: "Bethlehem Haile",
-                  role: "Nutrition & Wellness",
-                  body: "Fueling habits for optimal performance.",
-                  img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCXFr8iDXP6wEI_Rdad1WmnE7RhJZ5D2DYESkUaBd9wPevNSBcC2btIFBGtJmMTGLBepaPq9RvPz2ysaDyD20bQIuG0pTywcP0AWmi6S3nymiabdV8z6pujYdo50QSccPF3BVAuic4hxHvBE0gvj4nbOd393wIC5Ju3_o9wspPDJVn70sExWXtpEPZhc8mB9gfd8ejKe33Axyqcowccv-q2_szpfwTGhCPxSW9EMZ7AE8qlJ6NNVCxg6-5GIzrb2GaH5ILsRUVnovc",
+                  name: "Haile",
+                  role: "Certified Trainer",
+                  body: "Certified trainer focused on strength, technique, and progress.",
+                  img: "/Haile.jpg",
+                },
+                {
+                  name: "Dawit",
+                  role: "Certified Trainer",
+                  body: "Certified trainer helping members build durable fitness and confidence.",
+                  img: "/Dawit.jpg",
+                },
+                {
+                  name: "Mehari",
+                  role: "Certified Trainer",
+                  body: "Certified trainer guiding members through safe and effective training.",
+                  img: "/Mehari.jpg",
+                },
+                {
+                  name: "Genet",
+                  role: "Coach",
+                  body: "Coach for motivation, accountability, and coaching support.",
+                  img: "/Genet.jpg",
+                },
+                {
+                  name: "Teyba",
+                  role: "Coach",
+                  body: "Coach helping members stay committed and train with purpose.",
+                  img: "/Teyba.jpg",
                 },
               ].map((c) => (
                 <div key={c.name} className="group relative aspect-[3/4] overflow-hidden bg-surface">
                   <img
                     alt={c.name}
-                    className="absolute inset-0 h-full w-full object-cover grayscale transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0"
+                    className="absolute inset-0 h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
                     src={c.img}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-80" />
@@ -297,74 +319,13 @@ export default function AboutPage() {
         </section>
       </main>
 
-      {/* Footer (match Home) */}
-      <footer className="border-t border-primary/20 bg-background px-6 py-28 md:py-32">
-        <div className="mx-auto max-w-[1440px] px-10 md:px-16">
-          <div className="grid grid-cols-1 gap-16 md:grid-cols-4">
-            <div className="md:col-span-2">
-              <div className="mb-8 text-4xl font-black uppercase italic tracking-tighter text-primary">
-                Fitlab Gym &amp; Spa
-              </div>
-              <p className="max-w-sm text-sm font-medium uppercase italic leading-relaxed text-white/40">
-                Elite performance facility dedicated to physical excellence and
-                holistic recovery in the heart of Koyefeche. Built for those who
-                demand more from themselves.
-              </p>
-            </div>
-            <div>
-              <h4 className="mb-6 text-xs font-black uppercase italic tracking-widest text-primary">
-                Social Channels
-              </h4>
-              <div className="flex flex-col gap-4">
-                <a
-                  className="text-xl font-black uppercase italic tracking-tighter transition-colors hover:text-primary"
-                  href="#"
-                >
-                  Instagram
-                </a>
-                <a
-                  className="text-xl font-black uppercase italic tracking-tighter transition-colors hover:text-primary"
-                  href="#"
-                >
-                  Facebook
-                </a>
-                <a
-                  className="text-xl font-black uppercase italic tracking-tighter transition-colors hover:text-primary"
-                  href="#"
-                >
-                  Telegram
-                </a>
-              </div>
-            </div>
-            <div>
-              <h4 className="mb-6 text-xs font-black uppercase italic tracking-widest text-primary">
-                Contact
-              </h4>
-              <div className="flex flex-col gap-4">
-                <p className="text-sm font-bold uppercase">091 296 7931</p>
-                <p className="text-sm font-bold uppercase">hello@fitlabgym.com</p>
-                <p className="mt-8 text-xs font-black uppercase tracking-widest text-white/40">
-                  © {currentYear} Fitlab Gym &amp; Spa
-                </p>
-                <Link
-                  href="/admin/login"
-                  className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-widest text-white/30 transition-colors hover:text-primary"
-                  title="Admin portal"
-                >
-                  <span className="material-symbols-outlined text-sm">lock</span>
-                  Admin login
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
 
       {/* Breadcrumb Schema */}
       <SchemaComponent
         schema={breadcrumbSchema([
-          { name: "Home", url: BASE },
-          { name: "About", url: `${BASE}/about` },
+          { name: "Home", url: SITE_BASE_URL },
+          { name: "About", url: `${SITE_BASE_URL}/about` },
         ])}
       />
     </div>

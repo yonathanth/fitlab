@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { SiteNav } from "../components/SiteNav";
+import { SiteFooter } from "../components/SiteFooter";
 
 export default function ContactPage() {
-  const currentYear = new Date().getFullYear();
-
   return (
     <div className="bg-background text-on-background font-body selection:bg-primary selection:text-on-primary">
       <SiteNav />
@@ -60,16 +59,10 @@ export default function ContactPage() {
                   </p>
                   <div className="space-y-2">
                     <a
-                      href="tel:+251975427575"
+                      href="tel:+251912967931"
                       className="block text-2xl font-black tracking-tighter text-primary transition-colors hover:text-white"
                     >
-                      0975 427 575
-                    </a>
-                    <a
-                      href="tel:+251977363636"
-                      className="block text-2xl font-black tracking-tighter text-primary transition-colors hover:text-white"
-                    >
-                      0977 363 636
+                      091 296 7931
                     </a>
                   </div>
                 </div>
@@ -79,10 +72,7 @@ export default function ContactPage() {
                     Location
                   </p>
                   <p className="text-xl font-bold uppercase">
-                    Koye Feche
-                  </p>
-                  <p className="mt-2 text-sm font-medium uppercase italic text-white/60">
-                    Addis Ababa, Ethiopia
+                    Sheger city, Koye Feche, Nfas Lilk
                   </p>
                 </div>
 
@@ -91,16 +81,30 @@ export default function ContactPage() {
                     Social
                   </p>
                   <div className="flex flex-wrap gap-4">
-                    <a className="border-4 border-primary px-6 py-3 text-xs font-black uppercase tracking-widest text-primary transition-colors hover:bg-primary hover:text-on-primary" href="#">
+                    <a className="border-4 border-primary px-6 py-3 text-xs font-black uppercase tracking-widest text-primary transition-colors hover:bg-primary hover:text-on-primary" href="https://www.tiktok.com/@yaredbarch" target="_blank" rel="noopener noreferrer">
                       Instagram
                     </a>
-                    <a className="border-4 border-primary px-6 py-3 text-xs font-black uppercase tracking-widest text-primary transition-colors hover:bg-primary hover:text-on-primary" href="#">
+                    <a className="border-4 border-primary px-6 py-3 text-xs font-black uppercase tracking-widest text-primary transition-colors hover:bg-primary hover:text-on-primary" href="https://www.tiktok.com/@yaredbarch" target="_blank" rel="noopener noreferrer">
                       Facebook
                     </a>
-                    <a className="border-4 border-primary px-6 py-3 text-xs font-black uppercase tracking-widest text-primary transition-colors hover:bg-primary hover:text-on-primary" href="#">
-                      Telegram
+                    <a className="border-4 border-primary px-6 py-3 text-xs font-black uppercase tracking-widest text-primary transition-colors hover:bg-primary hover:text-on-primary" href="https://www.tiktok.com/@yaredbarch" target="_blank" rel="noopener noreferrer">
+                      TikTok
                     </a>
                   </div>
+                </div>
+                <div className="border-t border-primary/10 pt-8">
+                  <p className="mb-2 text-xs font-black uppercase tracking-widest text-white/50">
+                    Opening Hours
+                  </p>
+                  <p className="text-sm font-bold uppercase text-white/80">
+                    Mon - Fri: 05:00 - 21:00
+                  </p>
+                  <p className="mt-2 text-sm font-bold uppercase text-white/80">
+                    Saturday: 06:00 - 19:00
+                  </p>
+                  <p className="mt-2 text-sm font-bold uppercase text-white/80">
+                    Sunday: 08:00 - 14:00
+                  </p>
                 </div>
               </div>
             </div>
@@ -138,7 +142,7 @@ export default function ContactPage() {
                 {
                   icon: "schedule",
                   title: "Opening Hours",
-                  body: "We are open 6:00 AM to 8:45 PM Monday–Saturday, and 6:00 AM to 10:00 AM on Sundays.",
+                  body: "Mon - Fri: 05:00 - 21:00, Saturday: 06:00 - 19:00, Sunday: 08:00 - 14:00.",
                 },
                 {
                   icon: "payments",
@@ -207,68 +211,7 @@ export default function ContactPage() {
         </section>
       </main>
 
-      {/* Footer (match Home/About/Services) */}
-      <footer className="border-t border-primary/20 bg-background px-6 py-28 md:py-32">
-        <div className="mx-auto max-w-[1440px] px-10 md:px-16">
-          <div className="grid grid-cols-1 gap-16 md:grid-cols-4">
-            <div className="md:col-span-2">
-              <div className="mb-8 text-4xl font-black uppercase italic tracking-tighter text-primary">
-                Fitlab Gym &amp; Spa
-              </div>
-              <p className="max-w-sm text-sm font-medium uppercase italic leading-relaxed text-white/40">
-                Elite performance facility dedicated to physical excellence and
-                holistic recovery in the heart of Koyefeche. Built for those who
-                demand more from themselves.
-              </p>
-            </div>
-            <div>
-              <h4 className="mb-6 text-xs font-black uppercase italic tracking-widest text-primary">
-                Social Channels
-              </h4>
-              <div className="flex flex-col gap-4">
-                <a
-                  className="text-xl font-black uppercase italic tracking-tighter transition-colors hover:text-primary"
-                  href="#"
-                >
-                  Instagram
-                </a>
-                <a
-                  className="text-xl font-black uppercase italic tracking-tighter transition-colors hover:text-primary"
-                  href="#"
-                >
-                  Facebook
-                </a>
-                <a
-                  className="text-xl font-black uppercase italic tracking-tighter transition-colors hover:text-primary"
-                  href="#"
-                >
-                  Telegram
-                </a>
-              </div>
-            </div>
-            <div>
-              <h4 className="mb-6 text-xs font-black uppercase italic tracking-widest text-primary">
-                Contact
-              </h4>
-              <div className="flex flex-col gap-4">
-                <p className="text-sm font-bold uppercase">091 296 7931</p>
-                <p className="text-sm font-bold uppercase">hello@fitlabgym.com</p>
-                <p className="mt-8 text-xs font-black uppercase tracking-widest text-white/40">
-                  © {currentYear} Fitlab Gym &amp; Spa
-                </p>
-                <Link
-                  href="/admin/login"
-                  className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-widest text-white/30 transition-colors hover:text-primary"
-                  title="Admin portal"
-                >
-                  <span className="material-symbols-outlined text-sm">lock</span>
-                  Admin login
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

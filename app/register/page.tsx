@@ -2,14 +2,13 @@
 
 import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { potentialCustomersApi } from "@/lib/api";
 import { SiteNav } from "../components/SiteNav";
+import { SiteFooter } from "../components/SiteFooter";
 
 function RegisterContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentYear = new Date().getFullYear();
   const [selectedPlan, setSelectedPlan] = useState<"monthly" | "quarterly" | "annual">("quarterly");
   const [formData, setFormData] = useState({
     fullName: "",
@@ -74,8 +73,10 @@ function RegisterContent() {
       });
       setSelectedPackage("");
       setSelectedPlan("quarterly");
-    } catch (err: any) {
-      setError(err.message || "Registration failed. Please try again.");
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error ? err.message : "Registration failed. Please try again.";
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -269,68 +270,7 @@ function RegisterContent() {
         </section>
       </main>
 
-      {/* Footer (match other pages) */}
-      <footer className="border-t border-primary/20 bg-background px-6 py-28 md:py-32">
-        <div className="mx-auto max-w-[1440px] px-10 md:px-16">
-          <div className="grid grid-cols-1 gap-16 md:grid-cols-4">
-            <div className="md:col-span-2">
-              <div className="mb-8 text-4xl font-black uppercase italic tracking-tighter text-primary">
-                Fitlab Gym &amp; Spa
-              </div>
-              <p className="max-w-sm text-sm font-medium uppercase italic leading-relaxed text-white/40">
-                Elite performance facility dedicated to physical excellence and
-                holistic recovery in the heart of Koyefeche. Built for those who
-                demand more from themselves.
-              </p>
-            </div>
-            <div>
-              <h4 className="mb-6 text-xs font-black uppercase italic tracking-widest text-primary">
-                Social Channels
-              </h4>
-              <div className="flex flex-col gap-4">
-                <a
-                  className="text-xl font-black uppercase italic tracking-tighter transition-colors hover:text-primary"
-                  href="#"
-                >
-                  Instagram
-                </a>
-                <a
-                  className="text-xl font-black uppercase italic tracking-tighter transition-colors hover:text-primary"
-                  href="#"
-                >
-                  Facebook
-                </a>
-                <a
-                  className="text-xl font-black uppercase italic tracking-tighter transition-colors hover:text-primary"
-                  href="#"
-                >
-                  Telegram
-                </a>
-              </div>
-            </div>
-            <div>
-              <h4 className="mb-6 text-xs font-black uppercase italic tracking-widest text-primary">
-                Contact
-              </h4>
-              <div className="flex flex-col gap-4">
-                <p className="text-sm font-bold uppercase">091 296 7931</p>
-                <p className="text-sm font-bold uppercase">hello@fitlabgym.com</p>
-                <p className="mt-8 text-xs font-black uppercase tracking-widest text-white/40">
-                  © {currentYear} Fitlab Gym &amp; Spa
-                </p>
-                <Link
-                  href="/admin/login"
-                  className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-widest text-white/30 transition-colors hover:text-primary"
-                  title="Admin portal"
-                >
-                  <span className="material-symbols-outlined text-sm">lock</span>
-                  Admin login
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
 
       {/* Success popup – redirects to home */}
       {success && (

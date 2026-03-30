@@ -1,44 +1,43 @@
 import Link from "next/link";
 import { SiteNav } from "./components/SiteNav";
+import { SiteFooter } from "./components/SiteFooter";
 import { SchemaComponent } from "@/lib/schema-component";
 import { reviewSchema, breadcrumbSchema } from "@/lib/schemas";
 import type { Metadata } from "next";
-
-const BASE = "https://fitlab.et";
+import { SITE_BASE_URL, SITE_NAME } from "@/lib/site";
+import type { CSSProperties } from "react";
 
 export const metadata: Metadata = {
-  title: "Fit Lab — Elite Performance | Koye Feche, Addis Ababa",
+  title: `${SITE_NAME} — Elite Performance | Koye Feche, Addis Ababa`,
   description:
-    "Train without limits at Fit Lab. Advanced athletic programming in Koye Feche, Addis Ababa — HIIT, strength, recovery yoga, and combat fit.",
+    `Train without limits at ${SITE_NAME}. Advanced athletic programming in Koye Feche, Addis Ababa — HIIT, strength, recovery yoga, and combat fit.`,
   openGraph: {
-    title: "Fit Lab — Train Without Limits",
+    title: `${SITE_NAME} — Train Without Limits`,
     description:
       "Addis Ababa's dedicated performance floor. HIIT, strength lab, yoga, and combat conditioning.",
-    url: BASE,
+    url: SITE_BASE_URL,
   },
 };
 
 const heroSrc =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuD469nI9SR-9vzl6pW6iuFZgxR80M78Yfc5xqcgIc4ui9VGiFlHoaQaz8XffBIOP6pfgIuCt4oVp6FnJENRbrf2AT_E0THJuw9VFdTmmOnjzjBtju0nBCqQqDJatuuM7WKCNo6c-3GoLrmZl3wkSr6s5RLcjOzA1SI8OsumM9fpccscy93pjjIn1fE8XZ6xRlLc3xmeBut7B3qDU5vIcfVYe65XvedxIZm8q7H2uVQF4USmZvvpeniNQ3nP6AFpv3qWawCglmgBHAmJ";
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuBD_ubbILvAn1VdV0XBZ-NLVSyyuLxIW2utRjOhw7N6waJpLEe5oaUbicIRAlF5wF3V0KaqYDbRY8LGbTXWByUB5yGQaj94MGVgmLw7CqhoSWFbdbyPLnt5DQaFeW8ZIq6bm3AcJpIj3pAxr6iJKYEyi8eT0ppGOgYLpDOe_s_zFXmk5RtHCGJW6giVy0x8dHHouHjdyKS_H0QusXgwTVeV4nqS1eMAKSFsXHXrPt47UuOmuMaEICzeolbYspjl4ZIJvXPXywHe2Wo";
 
 const imgAerobics =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuAtRe5sHyVUtUYBJycS9S78Z5J-jBYkAbOu_vW9Yyu14MuYvhRb13IJ4GKsHlg_ZN96ND3a5UY_uVn8x_u3TT8Disj56FH17GBvMMkWFn8OYECA18o4jMLeAmvj8ZouMZC-zhDbAqb2eR_M0TDSiX_D710P2xDB3SqUgnHoZGktCEeO0ap17E_zB0DOw88PL8V357B_i6bq_VCeOz4sAd4ssTwqkA3LoP8f-B_46PaD87s6BE0Hzc1Nn2kbWx6xpSWa_VHys9zY2Zc4";
+  "https://plus.unsplash.com/premium_photo-1661611110468-c592daec0a15?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&v=2";
 const imgKickboxing =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuAAkLgdF1hrxKdfUVx8-917aFdZD3j44Ryq9vxCUjnHXJ81IH7fsolSARVpFqKCp1tf7YPJkW3dSaYNU2_BswfCd2ioHkZQ--xKPrpTkmMJgWfdeTE3NBMps9Ppd2EeSCxwR3qVb5jALiJa3gGAmxiryw1rhrxfVlLwTRcmM6hfcEz4GwKSUns-HXx_t_6sn_ZEXu67rkQCzsFEfbUBasz64DIA_9CvP7xoj8Q5gdLpr0_v8A5ogrWOnXSpvPRMJzWJ2uO8m9wL8yvR";
+  "https://images.unsplash.com/photo-1758778932703-7bfaaf1c42cd?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 const imgSteam =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuASzAprv6YNHvZ6xUsTbjqC_CBg1AJEHQsnSxyCX9v-NxohpxyeimV3L6o09Rlap7tdprROBfHBT0P8mQRpkOGzvRoZKIcGwHG3UpLDkWg4p7YlNEwHFKmA8XnB-XV8_VwY4RrZ1s7yaibZ7908DAzar78dOIyH1_bKQ3lrzlvIqYH9oR0QCiVbdqCjrPxWiaDo5QnFEQonJ_170cm1qPKGEytsOTGnTU-MmTlfgaYqNtHVAIBeZbJ_RHtuLtaFS198Xdooo6iNABYI";
+  "https://images.unsplash.com/photo-1755610146399-2bf78b0c1443?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 const imgSauna =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuAhs8bkCOxnCk_K6G_Do_5fqM2DmhpxXwxM_dl1oKchXv0UsDsctQv3El6DUApNq4xPbjaCa5bjzTjRy9pyJK1o9JKoXxH5ueH6UoYDI0eZO9TcvgkgjSQ54aaO3esrxZNpsZI8rN4NGO9_T3x62DBGwcW5s0t2wx_NR9cDh6VeCcqeG5diaP1uVpb-WD4sVK0QVw-H8xFHXVbkvEnIEeXv-SzVMzNK0AKZGeEOo1I_hoTqKUnfNjGuP5Lkyilp7QBDdsqVqhsqtgd8";
+  "https://images.unsplash.com/photo-1749561531832-3d79bad2ffab?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 export default function Home() {
-  const currentYear = new Date().getFullYear();
-
   return (
     <div className="bg-background text-on-background font-body selection:bg-primary selection:text-on-primary">
       <SiteNav />
 
       {/* Hero Section */}
-      <section className="relative flex min-h-screen items-center overflow-hidden pt-20">
+      <section className="relative flex min-h-[min(100dvh,46rem)] items-center overflow-hidden pt-20">
         {/* Background Elements */}
         <div className="absolute inset-0 z-0">
           <img
@@ -50,7 +49,7 @@ export default function Home() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 mx-auto grid w-full max-w-[1440px] grid-cols-1 gap-12 px-6 lg:grid-cols-12">
+        <div className="relative z-10 mx-auto grid w-full max-w-[1440px] grid-cols-1 gap-12 px-6 py-20 lg:grid-cols-12">
           <div className="lg:col-span-10">
             <div className="mb-6 flex items-center gap-4">
               <span className="h-px w-12 bg-primary" />
@@ -249,7 +248,7 @@ export default function Home() {
             <div className="mb-8 flex items-center gap-4">
               <span
                 className="material-symbols-outlined text-4xl font-black text-primary"
-                style={{ fontVariationSettings: "'FILL' 1" } as any}
+                style={{ fontVariationSettings: "'FILL' 1" } as CSSProperties}
               >
                 bolt
               </span>
@@ -321,71 +320,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-primary/20 bg-background px-6 py-28 md:py-32">
-        <div className="mx-auto max-w-[1440px] px-10 md:px-16">
-          <div className="grid grid-cols-1 gap-16 md:grid-cols-4">
-          <div className="md:col-span-2">
-            <div className="mb-8 text-4xl font-black uppercase italic tracking-tighter text-primary">
-              Fitlab Gym &amp; Spa
-            </div>
-            <p className="max-w-sm text-sm font-medium uppercase italic leading-relaxed text-white/40">
-              Elite performance facility dedicated to physical excellence and
-              holistic recovery in the heart of Koyefeche. Built for those who
-              demand more from themselves.
-            </p>
-          </div>
-          <div>
-            <h4 className="mb-6 text-xs font-black uppercase italic tracking-widest text-primary">
-              Social Channels
-            </h4>
-            <div className="flex flex-col gap-4">
-              <a
-                className="text-xl font-black uppercase italic tracking-tighter transition-colors hover:text-primary"
-                href="#"
-              >
-                Instagram
-              </a>
-              <a
-                className="text-xl font-black uppercase italic tracking-tighter transition-colors hover:text-primary"
-                href="#"
-              >
-                Facebook
-              </a>
-              <a
-                className="text-xl font-black uppercase italic tracking-tighter transition-colors hover:text-primary"
-                href="#"
-              >
-                Telegram
-              </a>
-            </div>
-          </div>
-          <div>
-            <h4 className="mb-6 text-xs font-black uppercase italic tracking-widest text-primary">
-              Contact
-            </h4>
-            <div className="flex flex-col gap-4">
-              <p className="text-sm font-bold uppercase">091 296 7931</p>
-              <p className="text-sm font-bold uppercase">hello@fitlabgym.com</p>
-              <p className="mt-8 text-xs font-black uppercase tracking-widest text-white/40">
-                © {currentYear} Fitlab Gym &amp; Spa
-              </p>
-              <Link
-                href="/admin/login"
-                className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-widest text-white/30 transition-colors hover:text-primary"
-                title="Admin portal"
-              >
-                <span className="material-symbols-outlined text-sm">lock</span>
-                Admin login
-              </Link>
-            </div>
-          </div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
 
       <SchemaComponent
-        schema={breadcrumbSchema([{ name: "Home", url: BASE }])}
+        schema={breadcrumbSchema([{ name: "Home", url: SITE_BASE_URL }])}
       />
 
       <SchemaComponent

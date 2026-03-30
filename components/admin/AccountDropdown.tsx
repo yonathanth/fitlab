@@ -67,8 +67,9 @@ export default function AccountDropdown() {
         setShowUpdateForm(false);
         setUpdateSuccess(false);
       }, 2000);
-    } catch (error: any) {
-      setUpdateError(error.message || 'Failed to update profile');
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : "Failed to update profile";
+      setUpdateError(msg);
     } finally {
       setIsUpdating(false);
     }

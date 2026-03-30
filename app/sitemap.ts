@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
+import { SITE_BASE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://fitlab.et";
+  const baseUrl = SITE_BASE_URL;
 
   return [
     {

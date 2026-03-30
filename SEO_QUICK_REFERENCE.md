@@ -1,4 +1,4 @@
-# SEO Quick Reference - Fitlab Gym
+# SEO Quick Reference - Fitlab Gym and Spa
 
 ## 🎯 One-Page SEO Overview
 
@@ -14,7 +14,7 @@
 ✅ Breadcrumb navigation schema  
 
 ### Domain
-🌐 **brightgymfitness.com**
+🌐 **fitlabgymandspa.com**
 
 ### Key Pages Optimized
 | Page | Schema Types | Keywords |
@@ -84,20 +84,20 @@ export const metadata: Metadata = {
 
 ### Validate Schema
 1. https://search.google.com/test/rich-results
-2. Paste URL: `https://brightgymfitness.com`
+2. Paste URL: `https://fitlabgymandspa.com`
 3. Look for: Organization, LocalBusiness, Product, FAQPage
 
 ### Check Mobile
 1. https://search.google.com/test/mobile-friendly
-2. Enter: `https://brightgymfitness.com`
+2. Enter: `https://fitlabgymandspa.com`
 
 ### Check Performance
 1. https://pagespeed.web.dev/
-2. Enter: `https://brightgymfitness.com`
+2. Enter: `https://fitlabgymandspa.com`
 
 ### Check OpenGraph
 1. https://www.opengraphcheck.com/
-2. Enter: `https://brightgymfitness.com`
+2. Enter: `https://fitlabgymandspa.com`
 
 ---
 
@@ -149,8 +149,8 @@ faqSchema([
 ### Breadcrumb (All Pages)
 ```typescript
 breadcrumbSchema([
-  { name: "Home", url: "https://brightgymfitness.com" },
-  { name: "Services", url: "https://brightgymfitness.com/services" }
+  { name: "Home", url: "https://fitlabgymandspa.com" },
+  { name: "Services", url: "https://fitlabgymandspa.com/services" }
 ])
 ```
 
