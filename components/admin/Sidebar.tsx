@@ -47,12 +47,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="p-5 border-b border-surface-dark-lighter">
-            <Link href="/admin/dashboard" className="flex items-center gap-3" onClick={onClose}>
-              <div className="size-10 shrink-0 bg-surface-dark-lighter border border-outline-variant flex items-center justify-center">
-                <span className="text-[10px] font-black uppercase tracking-widest text-primary">
-                  Logo
-                </span>
-              </div>
+            <Link href="/admin/dashboard" className="flex items-center" onClick={onClose}>
               <div>
                 <span className="text-white font-bold text-lg">Fitlab Gym</span>
                 <p className="text-white/60 text-xs">Admin Panel</p>
@@ -86,12 +81,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
           {/* Branding */}
           <div className="p-4 border-t border-surface-dark-lighter">
-            <Link href="/admin/dashboard" className="flex items-center gap-3" onClick={onClose}>
-              <div className="size-10 shrink-0 bg-surface-dark-lighter border border-outline-variant flex items-center justify-center">
-                <span className="text-[10px] font-black uppercase tracking-widest text-primary">
-                  Logo
-                </span>
-              </div>
+            <Link href="/admin/dashboard" className="flex items-center" onClick={onClose}>
               <span className="text-white font-bold text-lg">Fitlab Gym</span>
             </Link>
           </div>
