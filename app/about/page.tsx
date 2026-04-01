@@ -191,7 +191,7 @@ export default function AboutPage() {
                   img: "/Yared.jpg",
                 },
                 {
-                  name: "Henok",
+                  name: "Mikiyas",
                   role: "Co-founder",
                   body: "Supports daily operations and coordinates the team across programs.",
                   img: "/Henok.jpg",
@@ -204,7 +204,7 @@ export default function AboutPage() {
                 },
                 {
                   name: "Haile",
-                  role: "Certified Trainer",
+                  role: "Supervisor",
                   body: "Certified trainer focused on strength, technique, and progress.",
                   img: "/Haile.jpg",
                 },

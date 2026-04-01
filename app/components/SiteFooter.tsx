@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BUSINESS_LOCATION_LINE } from "@/lib/site";
 
 const TIKTOK_URL = "https://www.tiktok.com/@yaredbarch";
 
@@ -57,13 +58,10 @@ export function SiteFooter() {
               Contact
             </h4>
             <div className="flex flex-col gap-3 text-sm font-bold uppercase">
-              <p>Sheger city, Koye Feche, Nfas Lilk</p>
+              <p>{BUSINESS_LOCATION_LINE}</p>
               <p>091 296 7931</p>
               <p className="pt-2 text-xs font-black uppercase tracking-widest text-white/60">
-                Mon - Fri: 05:00 - 21:00
-              </p>
-              <p className="text-xs font-black uppercase tracking-widest text-white/60">
-                Saturday: 06:00 - 19:00
+                Mon - Sat: 05:00 - 21:00
               </p>
               <p className="text-xs font-black uppercase tracking-widest text-white/60">
                 Sunday: 08:00 - 14:00

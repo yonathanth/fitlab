@@ -6,7 +6,6 @@ import {
   transactionsApi,
   Transaction,
   TransactionType,
-  TransactionStats,
   PaginatedResponse,
 } from '@/lib/api';
 import DataTable, { Pagination, type Column } from '@/components/admin/DataTable';
@@ -45,14 +44,37 @@ function isInflow(type: TransactionType): boolean {
   return type === 'income' || type === 'positive_return';
 }
 
+type DatePreset = 'daily' | 'this_week' | 'this_month' | 'this_year' | 'custom';
+
+function toYmd(d: Date): string {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function startOfWeekMonday(d: Date): Date {
+  const copy = new Date(d);
+  copy.setHours(0, 0, 0, 0);
+  const day = copy.getDay(); // 0=Sun..6=Sat
+  const diff = (day + 6) % 7; // Monday => 0
+  copy.setDate(copy.getDate() - diff);
+  return copy;
+}
+
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<PaginatedResponse<Transaction> | null>(null);
-  const [stats, setStats] = useState<TransactionStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [typeFilter, setTypeFilter] = useState<string>('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [datePreset, setDatePreset] = useState<DatePreset>('daily');
+  const [customStartDate, setCustomStartDate] = useState('');
+  const [customEndDate, setCustomEndDate] = useState('');
+  const [summaryTotals, setSummaryTotals] = useState<{ income: number; outflows: number; net: number }>({
+    income: 0,
+    outflows: 0,
+    net: 0,
+  });
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [exporting, setExporting] = useState(false);
   const exportMenuRef = useRef<HTMLDivElement>(null);
@@ -66,15 +88,50 @@ export default function TransactionsPage() {
     }).format(amount);
   };
 
+  const getEffectiveDateRange = useCallback((): { startDate?: string; endDate?: string } => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
+    if (datePreset === 'custom') {
+      return {
+        startDate: customStartDate || undefined,
+        endDate: customEndDate || undefined,
+      };
+    }
+
+    if (datePreset === 'daily') {
+      const ymd = toYmd(now);
+      return { startDate: ymd, endDate: ymd };
+    }
+
+    if (datePreset === 'this_week') {
+      const start = startOfWeekMonday(now);
+      return { startDate: toYmd(start), endDate: toYmd(now) };
+    }
+
+    if (datePreset === 'this_month') {
+      const start = new Date(now.getFullYear(), now.getMonth(), 1);
+      return { startDate: toYmd(start), endDate: toYmd(now) };
+    }
+
+    if (datePreset === 'this_year') {
+      const start = new Date(now.getFullYear(), 0, 1);
+      return { startDate: toYmd(start), endDate: toYmd(now) };
+    }
+
+    return {};
+  }, [customEndDate, customStartDate, datePreset]);
+
   const fetchTransactions = useCallback(async () => {
     try {
       setIsLoading(true);
+      const { startDate, endDate } = getEffectiveDateRange();
       const data = await transactionsApi.getAll({
         page,
         limit,
         transactionType: (typeFilter as TransactionType) || undefined,
-        startDate: startDate || undefined,
-        endDate: endDate || undefined,
+        startDate,
+        endDate,
       });
       setTransactions(data);
     } catch (err) {
@@ -82,24 +139,41 @@ export default function TransactionsPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [page, typeFilter, startDate, endDate]);
+  }, [page, typeFilter, getEffectiveDateRange]);
 
-  const fetchStats = useCallback(async () => {
+  const fetchSummaryTotals = useCallback(async () => {
     try {
-      const data = await transactionsApi.getStats();
-      setStats(data);
+      const allTx = await fetchAllTransactionsForExport();
+      const totals = allTx.reduce(
+        (acc, tx) => {
+          if (isInflow(tx.type)) {
+            acc.income += tx.amount;
+          } else {
+            acc.outflows += tx.amount;
+          }
+          return acc;
+        },
+        { income: 0, outflows: 0, net: 0 }
+      );
+      totals.net = totals.income - totals.outflows;
+      setSummaryTotals(totals);
     } catch (err) {
-      console.error('Failed to fetch stats:', err);
+      console.error('Failed to fetch summary totals:', err);
     }
-  }, []);
+  }, [typeFilter, datePreset, customStartDate, customEndDate]);
 
   useEffect(() => {
     fetchTransactions();
   }, [fetchTransactions]);
 
   useEffect(() => {
-    fetchStats();
-  }, [fetchStats]);
+    fetchSummaryTotals();
+  }, [fetchSummaryTotals]);
+
+  useEffect(() => {
+    // Changing presets should reset paging.
+    setPage(1);
+  }, [datePreset]);
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString('en-GB', {
@@ -221,13 +295,14 @@ export default function TransactionsPage() {
     const pageLimit = 100; // API enforces max 100
     let pageNum = 1;
     let hasMore = true;
+    const { startDate, endDate } = getEffectiveDateRange();
     while (hasMore) {
       const res = await transactionsApi.getAll({
         page: pageNum,
         limit: pageLimit,
         transactionType: (typeFilter as TransactionType) || undefined,
-        startDate: startDate || undefined,
-        endDate: endDate || undefined,
+        startDate,
+        endDate,
       });
       all.push(...res.data);
       hasMore = res.data.length === pageLimit && pageNum * pageLimit < res.meta.total;
@@ -243,6 +318,7 @@ export default function TransactionsPage() {
     } else {
       parts.push('Type: All');
     }
+    const { startDate, endDate } = getEffectiveDateRange();
     if (startDate || endDate) {
       parts.push(`Date: ${startDate || '...'} -> ${endDate || '...'}`);
     }
@@ -509,138 +585,20 @@ export default function TransactionsPage() {
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatsCard
-          title="Total Income"
-          value={formatCurrency(stats?.totalIncome || 0)}
-          icon="trending_up"
-          color="green"
-        />
-        <StatsCard
-          title="Total Outflows"
-          value={formatCurrency(stats?.totalOutflows || 0)}
-          icon="trending_down"
-          color="red"
-        />
-        <StatsCard
-          title="Net Profit"
-          value={formatCurrency(stats?.netProfit || 0)}
-          icon="account_balance"
-          color="primary"
-        />
-        <StatsCard
-          title="This Month"
-          value={formatCurrency(stats?.thisMonthIncome || 0)}
-          icon="calendar_month"
-          color="blue"
-          trend={
-            stats
-              ? {
-                  value: calculateChange(
-                    stats.thisMonthIncome,
-                    stats.lastMonthIncome
-                  ),
-                  isPositive:
-                    stats.thisMonthIncome >= stats.lastMonthIncome,
-                }
-              : undefined
-          }
-        />
-      </div>
-
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* This Month Overview */}
-        <div className="bg-surface-dark rounded-xl border border-surface-dark-lighter p-6">
-          <h2 className="text-white font-semibold mb-4">This Month</h2>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="size-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400">
-                  <span className="material-symbols-outlined">arrow_downward</span>
-                </div>
-                <span className="text-white/80">Income</span>
-              </div>
-              <span className="text-emerald-400 font-semibold">
-                {formatCurrency(stats?.thisMonthIncome || 0)}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="size-10 rounded-full bg-red-500/10 flex items-center justify-center text-red-400">
-                  <span className="material-symbols-outlined">arrow_upward</span>
-                </div>
-                <span className="text-white/80">Outflows</span>
-              </div>
-              <span className="text-red-400 font-semibold">
-                {formatCurrency(stats?.thisMonthOutflows || 0)}
-              </span>
-            </div>
-            <div className="border-t border-surface-dark-lighter pt-4 flex items-center justify-between">
-              <span className="text-white font-medium">Net</span>
-              <span
-                className={`font-bold text-lg ${
-                  (stats?.thisMonthIncome || 0) - (stats?.thisMonthOutflows || 0) >= 0
-                    ? 'text-emerald-400'
-                    : 'text-red-400'
-                }`}
-              >
-                {formatCurrency(
-                  (stats?.thisMonthIncome || 0) - (stats?.thisMonthOutflows || 0)
-                )}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Last Month Overview */}
-        <div className="bg-surface-dark rounded-xl border border-surface-dark-lighter p-6">
-          <h2 className="text-white font-semibold mb-4">Last Month</h2>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="size-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400">
-                  <span className="material-symbols-outlined">arrow_downward</span>
-                </div>
-                <span className="text-white/80">Income</span>
-              </div>
-              <span className="text-emerald-400 font-semibold">
-                {formatCurrency(stats?.lastMonthIncome || 0)}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="size-10 rounded-full bg-red-500/10 flex items-center justify-center text-red-400">
-                  <span className="material-symbols-outlined">arrow_upward</span>
-                </div>
-                <span className="text-white/80">Outflows</span>
-              </div>
-              <span className="text-red-400 font-semibold">
-                {formatCurrency(stats?.lastMonthOutflows || 0)}
-              </span>
-            </div>
-            <div className="border-t border-surface-dark-lighter pt-4 flex items-center justify-between">
-              <span className="text-white font-medium">Net</span>
-              <span
-                className={`font-bold text-lg ${
-                  (stats?.lastMonthIncome || 0) - (stats?.lastMonthOutflows || 0) >= 0
-                    ? 'text-emerald-400'
-                    : 'text-red-400'
-                }`}
-              >
-                {formatCurrency(
-                  (stats?.lastMonthIncome || 0) - (stats?.lastMonthOutflows || 0)
-                )}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Filters */}
       <div className="bg-surface-dark rounded-xl border border-surface-dark-lighter p-4">
         <form onSubmit={handleFilter} className="flex flex-col sm:flex-row gap-4">
+          <select
+            value={datePreset}
+            onChange={(e) => setDatePreset(e.target.value as DatePreset)}
+            className="h-10 px-4 bg-surface-dark-lighter border border-surface-dark-lighter rounded-lg text-white focus:outline-none focus:border-primary/50 transition-colors"
+          >
+            <option value="daily">Daily</option>
+            <option value="this_week">This week</option>
+            <option value="this_month">This month</option>
+            <option value="this_year">This year</option>
+            <option value="custom">Custom</option>
+          </select>
           <select
             value={typeFilter}
             onChange={(e) => {
@@ -657,31 +615,36 @@ export default function TransactionsPage() {
           </select>
           <input
             type="date"
-            value={startDate}
+            value={datePreset === 'custom' ? customStartDate : ''}
             onChange={(e) => {
-              setStartDate(e.target.value);
+              setDatePreset('custom');
+              setCustomStartDate(e.target.value);
               setPage(1);
             }}
             placeholder="From Date"
             className="h-10 px-4 bg-surface-dark-lighter border border-surface-dark-lighter rounded-lg text-white focus:outline-none focus:border-primary/50 transition-colors"
+            disabled={datePreset !== 'custom'}
           />
           <input
             type="date"
-            value={endDate}
+            value={datePreset === 'custom' ? customEndDate : ''}
             onChange={(e) => {
-              setEndDate(e.target.value);
+              setDatePreset('custom');
+              setCustomEndDate(e.target.value);
               setPage(1);
             }}
             placeholder="To Date"
             className="h-10 px-4 bg-surface-dark-lighter border border-surface-dark-lighter rounded-lg text-white focus:outline-none focus:border-primary/50 transition-colors"
+            disabled={datePreset !== 'custom'}
           />
-          {(typeFilter || startDate || endDate) && (
+          {(typeFilter || datePreset !== 'daily' || customStartDate || customEndDate) && (
             <button
               type="button"
               onClick={() => {
                 setTypeFilter('');
-                setStartDate('');
-                setEndDate('');
+                setDatePreset('daily');
+                setCustomStartDate('');
+                setCustomEndDate('');
                 setPage(1);
               }}
               className="h-10 px-4 bg-surface-dark-lighter text-white/60 rounded-lg hover:text-white transition-colors"
@@ -696,6 +659,28 @@ export default function TransactionsPage() {
             Filter
           </button>
         </form>
+      </div>
+
+      {/* Stats Grid (affected by date filters) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <StatsCard
+          title="Total Income"
+          value={formatCurrency(summaryTotals.income)}
+          icon="trending_up"
+          color="green"
+        />
+        <StatsCard
+          title="Total Outflows"
+          value={formatCurrency(summaryTotals.outflows)}
+          icon="trending_down"
+          color="red"
+        />
+        <StatsCard
+          title="Net Profit"
+          value={formatCurrency(summaryTotals.net)}
+          icon="account_balance"
+          color="primary"
+        />
       </div>
 
       {/* Transactions Table */}

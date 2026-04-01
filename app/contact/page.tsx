@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { SiteNav } from "../components/SiteNav";
 import { SiteFooter } from "../components/SiteFooter";
+import { BUSINESS_LOCATION_LINE } from "@/lib/site";
 
 export default function ContactPage() {
   return (
@@ -72,7 +73,7 @@ export default function ContactPage() {
                     Location
                   </p>
                   <p className="text-xl font-bold uppercase">
-                    Sheger city, Koye Feche, Nfas Lilk
+                    {BUSINESS_LOCATION_LINE}
                   </p>
                 </div>
 
@@ -97,10 +98,7 @@ export default function ContactPage() {
                     Opening Hours
                   </p>
                   <p className="text-sm font-bold uppercase text-white/80">
-                    Mon - Fri: 05:00 - 21:00
-                  </p>
-                  <p className="mt-2 text-sm font-bold uppercase text-white/80">
-                    Saturday: 06:00 - 19:00
+                    Mon - Sat: 05:00 - 21:00
                   </p>
                   <p className="mt-2 text-sm font-bold uppercase text-white/80">
                     Sunday: 08:00 - 14:00
@@ -142,7 +140,7 @@ export default function ContactPage() {
                 {
                   icon: "schedule",
                   title: "Opening Hours",
-                  body: "Mon - Fri: 05:00 - 21:00, Saturday: 06:00 - 19:00, Sunday: 08:00 - 14:00.",
+                  body: "Mon - Sat: 05:00 - 21:00, Sunday: 08:00 - 14:00.",
                 },
                 {
                   icon: "payments",

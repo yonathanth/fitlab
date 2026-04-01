@@ -4,7 +4,7 @@ import { SiteFooter } from "./components/SiteFooter";
 import { SchemaComponent } from "@/lib/schema-component";
 import { reviewSchema, breadcrumbSchema } from "@/lib/schemas";
 import type { Metadata } from "next";
-import { SITE_BASE_URL, SITE_NAME } from "@/lib/site";
+import { BUSINESS_LOCATION_LINE, SITE_BASE_URL, SITE_NAME } from "@/lib/site";
 import type { CSSProperties } from "react";
 
 export const metadata: Metadata = {
@@ -219,18 +219,10 @@ export default function Home() {
             <div className="max-w-md space-y-8">
               <div className="flex items-end justify-between border-b-4 border-on-primary/10 pb-4">
                 <span className="text-2xl font-black uppercase italic tracking-tighter">
-                  Mon - Fri
+                  Mon - Sat
                 </span>
                 <span className="text-4xl font-black tracking-tighter">
                   05:00 - 21:00
-                </span>
-              </div>
-              <div className="flex items-end justify-between border-b-4 border-on-primary/10 pb-4">
-                <span className="text-2xl font-black uppercase italic tracking-tighter">
-                  Saturday
-                </span>
-                <span className="text-4xl font-black tracking-tighter">
-                  06:00 - 19:00
                 </span>
               </div>
               <div className="flex items-end justify-between border-b-4 border-on-primary/10 pb-4">
@@ -262,7 +254,7 @@ export default function Home() {
                   Location
                 </p>
                 <p className="text-xl font-bold uppercase">
-                  Sheger city, Koye Feche, nfas lilk
+                  {BUSINESS_LOCATION_LINE}
                 </p>
               </div>
               <div>
