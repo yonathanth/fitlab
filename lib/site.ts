@@ -6,6 +6,9 @@ export const BUSINESS_LOCATION_LINE = "Sheger city, Koye Feche, NFAS Silk";
 export const PHONE_DISPLAY = "091 296 7931";
 export const PHONE_E164 = "+251912967931";
 
+export const PHONE_DISPLAY_SECONDARY = "091 360 0358";
+export const PHONE_E164_SECONDARY = "+251913600358";
+
 export const SOCIAL_FALLBACK_URL = "https://www.tiktok.com/@yaredbarch";
 
 export const OPENING_HOURS_HUMAN = {

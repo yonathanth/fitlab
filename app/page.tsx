@@ -4,7 +4,15 @@ import { SiteFooter } from "./components/SiteFooter";
 import { SchemaComponent } from "@/lib/schema-component";
 import { reviewSchema, breadcrumbSchema } from "@/lib/schemas";
 import type { Metadata } from "next";
-import { BUSINESS_LOCATION_LINE, SITE_BASE_URL, SITE_NAME } from "@/lib/site";
+import {
+  BUSINESS_LOCATION_LINE,
+  PHONE_DISPLAY,
+  PHONE_DISPLAY_SECONDARY,
+  PHONE_E164,
+  PHONE_E164_SECONDARY,
+  SITE_BASE_URL,
+  SITE_NAME,
+} from "@/lib/site";
 import type { CSSProperties } from "react";
 
 export const metadata: Metadata = {
@@ -261,9 +269,20 @@ export default function Home() {
                 <p className="mb-1 text-xs font-black uppercase italic tracking-widest text-primary">
                   Direct Line
                 </p>
-                <p className="text-3xl font-black tracking-tighter">
-                  091 296 7931
-                </p>
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-6">
+                  <a
+                    href={`tel:${PHONE_E164}`}
+                    className="text-3xl font-black tracking-tighter text-on-background transition-colors hover:text-primary"
+                  >
+                    {PHONE_DISPLAY}
+                  </a>
+                  <a
+                    href={`tel:${PHONE_E164_SECONDARY}`}
+                    className="text-3xl font-black tracking-tighter text-on-background transition-colors hover:text-primary"
+                  >
+                    {PHONE_DISPLAY_SECONDARY}
+                  </a>
+                </div>
               </div>
             </div>
             <button

@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { SiteNav } from "../components/SiteNav";
 import { SiteFooter } from "../components/SiteFooter";
-import { BUSINESS_LOCATION_LINE } from "@/lib/site";
+import {
+  BUSINESS_LOCATION_LINE,
+  PHONE_DISPLAY,
+  PHONE_DISPLAY_SECONDARY,
+  PHONE_E164,
+  PHONE_E164_SECONDARY,
+} from "@/lib/site";
 
 export default function ContactPage() {
   return (
@@ -58,12 +64,18 @@ export default function ContactPage() {
                   <p className="mb-2 text-xs font-black uppercase tracking-widest text-white/50">
                     Phone
                   </p>
-                  <div className="space-y-2">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-6">
                     <a
-                      href="tel:+251912967931"
+                      href={`tel:${PHONE_E164}`}
                       className="block text-2xl font-black tracking-tighter text-primary transition-colors hover:text-white"
                     >
-                      091 296 7931
+                      {PHONE_DISPLAY}
+                    </a>
+                    <a
+                      href={`tel:${PHONE_E164_SECONDARY}`}
+                      className="block text-2xl font-black tracking-tighter text-primary transition-colors hover:text-white"
+                    >
+                      {PHONE_DISPLAY_SECONDARY}
                     </a>
                   </div>
                 </div>

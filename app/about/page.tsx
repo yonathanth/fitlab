@@ -182,7 +182,7 @@ export default function AboutPage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
               {[
                 {
                   name: "Yared",
@@ -205,7 +205,7 @@ export default function AboutPage() {
                 {
                   name: "Haile",
                   role: "Supervisor",
-                  body: "Certified trainer focused on strength, technique, and progress.",
+                  body: "Oversees daily floor operations, staff coordination, and a consistent experience for every member.",
                   img: "/Haile.jpg",
                 },
                 {
@@ -231,6 +231,18 @@ export default function AboutPage() {
                   role: "Coach",
                   body: "Coach helping members stay committed and train with purpose.",
                   img: "/Teyba.jpg",
+                },
+                {
+                  name: "Tamrat",
+                  role: "Coach",
+                  body: "Coach focused on technique, progress, and keeping every session purposeful.",
+                  img: "/Tamrat.jpg",
+                },
+                {
+                  name: "Biniam",
+                  role: "Coach",
+                  body: "Coach supporting members with structured training and steady improvement.",
+                  img: "/Biniam.jpg",
                 },
               ].map((c) => (
                 <div key={c.name} className="group relative aspect-[3/4] overflow-hidden bg-surface">

@@ -27,6 +27,7 @@ import {
   ADDRESS_SCHEMA,
   OPENING_HOURS_SCHEMA,
   PHONE_E164,
+  PHONE_E164_SECONDARY,
   SITE_BASE_URL,
   SITE_NAME,
   SOCIAL_FALLBACK_URL,
@@ -100,7 +101,7 @@ export const localBusinessSchema = (): BaseSchema & {
   image: string;
   description: string;
   url: string;
-  telephone: string;
+  telephone: string | string[];
   address: {
     "@type": "PostalAddress";
     streetAddress: string;
@@ -135,7 +136,7 @@ export const localBusinessSchema = (): BaseSchema & {
   description:
     "Elite performance training in Koye Feche, Addis Ababa — strength, HIIT, yoga, combat fit.",
   url: SITE_BASE_URL,
-  telephone: PHONE_E164,
+  telephone: [PHONE_E164, PHONE_E164_SECONDARY],
   address: [
     {
       "@type": "PostalAddress",
