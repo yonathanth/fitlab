@@ -1,5 +1,5 @@
 // API Client with typed responses for Gym API
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'fitlab-api.shalops.com';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'api.fitlabgymandspa.com';
 
 // Types based on gym-api DTOs
 export interface AdminProfile {
