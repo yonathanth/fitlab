@@ -95,6 +95,9 @@ export default function AttendancePage() {
             <p className="text-white/40 text-xs">
               {record.member?.memberId || '-'}
             </p>
+            <p className="text-white/50 text-xs">
+              Service: {record.member?.service?.name || record.member?.serviceType || '-'}
+            </p>
           </div>
         </div>
       ),
@@ -288,5 +291,4 @@ export default function AttendancePage() {
     </div>
   );
 }
-
 
