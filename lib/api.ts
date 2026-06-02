@@ -43,6 +43,7 @@ export interface Member {
   emergencyContact?: string;
   notes?: string;
   membershipTier?: string;
+  service?: Pick<Service, 'id' | 'name'> | null;
   goals?: string | null;
   bloodType?: string | null;
   age?: number | null;
@@ -581,7 +582,6 @@ export const smsApi = {
 
   getTemplates: () => apiFetch<SmsTemplate[]>('/api/sms/templates'),
 };
-
 
 
 
