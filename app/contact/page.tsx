@@ -5,6 +5,7 @@ import { SiteNav } from "../components/SiteNav";
 import { SiteFooter } from "../components/SiteFooter";
 import {
   BUSINESS_LOCATION_LINE,
+  OPENING_HOURS_HUMAN,
   PHONE_DISPLAY,
   PHONE_DISPLAY_SECONDARY,
   PHONE_E164,
@@ -110,10 +111,10 @@ export default function ContactPage() {
                     Opening Hours
                   </p>
                   <p className="text-sm font-bold uppercase text-white/80">
-                    Mon - Sat: 05:00 - 21:00
+                    Mon - Sat: {OPENING_HOURS_HUMAN.monSat}
                   </p>
                   <p className="mt-2 text-sm font-bold uppercase text-white/80">
-                    Sunday: 08:00 - 14:00
+                    Sunday: {OPENING_HOURS_HUMAN.sunday}
                   </p>
                 </div>
               </div>
@@ -152,7 +153,7 @@ export default function ContactPage() {
                 {
                   icon: "schedule",
                   title: "Opening Hours",
-                  body: "Mon - Sat: 05:00 - 21:00, Sunday: 08:00 - 14:00.",
+                  body: `Mon - Sat: ${OPENING_HOURS_HUMAN.monSat}, Sunday: ${OPENING_HOURS_HUMAN.sunday}.`,
                 },
                 {
                   icon: "payments",
@@ -225,4 +226,3 @@ export default function ContactPage() {
     </div>
   );
 }
-

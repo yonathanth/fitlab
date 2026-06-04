@@ -6,6 +6,7 @@ import { reviewSchema, breadcrumbSchema } from "@/lib/schemas";
 import type { Metadata } from "next";
 import {
   BUSINESS_LOCATION_LINE,
+  OPENING_HOURS_HUMAN,
   PHONE_DISPLAY,
   PHONE_DISPLAY_SECONDARY,
   PHONE_E164,
@@ -230,7 +231,7 @@ export default function Home() {
                   Mon - Sat
                 </span>
                 <span className="text-4xl font-black tracking-tighter">
-                  05:00 - 21:00
+                  {OPENING_HOURS_HUMAN.monSat}
                 </span>
               </div>
               <div className="flex items-end justify-between border-b-4 border-on-primary/10 pb-4">
@@ -238,7 +239,7 @@ export default function Home() {
                   Sunday
                 </span>
                 <span className="text-4xl font-black tracking-tighter">
-                  08:00 - 14:00
+                  {OPENING_HOURS_HUMAN.sunday}
                 </span>
               </div>
             </div>

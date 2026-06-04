@@ -12,8 +12,8 @@ export const PHONE_E164_SECONDARY = "+251913600358";
 export const SOCIAL_FALLBACK_URL = "https://www.tiktok.com/@yaredbarch";
 
 export const OPENING_HOURS_HUMAN = {
-  monSat: "05:00 - 21:00",
-  sunday: "08:00 - 14:00",
+  monSat: "5:00 AM - 9:00 PM",
+  sunday: "8:00 AM - 2:00 PM",
 } as const;
 
 export const OPENING_HOURS_SCHEMA = [
@@ -41,4 +41,3 @@ export const ADDRESS_SCHEMA = {
   addressLocality: "Addis Ababa",
   addressCountry: "ET",
 } as const;
-
