@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {
   BUSINESS_LOCATION_LINE,
+  OPENING_HOURS_HUMAN,
   PHONE_DISPLAY,
   PHONE_DISPLAY_SECONDARY,
 } from "@/lib/site";
@@ -69,10 +70,10 @@ export function SiteFooter() {
                 {PHONE_DISPLAY_SECONDARY}
               </p>
               <p className="pt-2 text-xs font-black uppercase tracking-widest text-white/60">
-                Mon - Sat: 05:00 - 21:00
+                Mon - Sat: {OPENING_HOURS_HUMAN.monSat}
               </p>
               <p className="text-xs font-black uppercase tracking-widest text-white/60">
-                Sunday: 08:00 - 14:00
+                Sunday: {OPENING_HOURS_HUMAN.sunday}
               </p>
               <p className="mt-5 text-xs font-black uppercase tracking-widest text-white/40">
                 © {currentYear} Fitlab Gym &amp; Spa
