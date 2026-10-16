@@ -51,8 +51,64 @@ export interface Member {
   telegramUsername?: string | null;
   remark?: string | null;
   objective?: string | null;
+  /** Desktop staff id of the assigned trainer */
+  trainerStaffId?: number | null;
   createdAt: string;
   updatedAt: string;
+}
+
+/**
+ * A row synced from a desktop table without its own endpoint (add-ons, drop-ins,
+ * discounts, schedules, ...): the desktop's snake_case columns plus its desktop id.
+ */
+export type DesktopRow = { id: number } & Record<string, unknown>;
+
+/** Desktop tables readable through /api/records/:entity */
+export type RecordEntity =
+  | 'additional_service'
+  | 'additional_service_variant'
+  | 'member_additional_subscription'
+  | 'usage_service'
+  | 'service_usage'
+  | 'discount'
+  | 'finance_cut'
+  | 'member_group'
+  | 'member_group_member'
+  | 'freeze_history'
+  | 'member_plan_history'
+  | 'member_relation'
+  | 'schedule'
+  | 'schedule_item'
+  | 'audit_log'
+  | 'income_category'
+  | 'expense_category'
+  | 'staff_role'
+  | 'subscription_correction'
+  | 'member_plan_change'
+  | 'member_queued_plan'
+  | 'plan_change_policy'
+  | 'health_metric_reminders'
+  | 'health_metric_standards'
+  | 'sms_message'
+  | 'discount_target'
+  | 'finance_cut_target'
+  | 'member_addon_period'
+  | 'door_event_log'
+  | 'app_user'
+  | 'system_settings'
+  | 'device_terminal'
+  | 'notification';
+
+export interface MemberDetails {
+  trainer: { id: number; fullName: string } | null;
+  /** Add-on subscriptions, with addonName / variantName filled in */
+  addons: (DesktopRow & { addonName: string | null; variantName: string | null })[];
+  freezeHistory: DesktopRow[];
+  planHistory: DesktopRow[];
+  group: { id: number; name: string; joinedAt: string | null } | null;
+  relations: { relation: string; note: string | null; member: { id: number; fullName: string } | null }[];
+  /** Drop-in visits, with serviceName filled in */
+  dropIns: (DesktopRow & { serviceName: string | null })[];
 }
 
 export interface MemberStats {
@@ -104,9 +160,20 @@ export interface Transaction {
   category: string;
   description?: string;
   paymentMethod?: string;
+  paymentStatus?: string;
+  /** What the payment was for */
+  source?: 'membership' | 'addon' | 'drop_in' | 'other';
+  /** Membership, add-on or drop-in name */
+  sourceName?: string;
+  /** Price before discount */
+  originalAmount?: number;
+  discountAmount?: number;
+  discountCode?: string;
   transactionDate: string;
   member?: Member;
   createdAt: string;
+  /** Who took the payment in the gym app; only on a single transaction */
+  recordedBy?: { username: string; role: string | null; auditId: number | null } | null;
 }
 
 export interface TransactionStats {
@@ -348,7 +415,9 @@ async function apiFetch<T>(
     
     throw new ApiError(response.status, errorMessage);
   }
-  
+
+  // 204 No Content has no body to parse
+  if (response.status === 204) return undefined as T;
   return response.json();
 }
 
@@ -397,6 +466,8 @@ export const membersApi = {
   getOne: (id: number) => apiFetch<Member>(`/api/members/${id}`),
   
   getStats: () => apiFetch<MemberStats>('/api/members/stats'),
+
+  getDetails: (id: number) => apiFetch<MemberDetails>(`/api/members/${id}/details`),
   
   search: (q: string, limit = 10) =>
     apiFetch<Member[]>(`/api/members/search?q=${encodeURIComponent(q)}&limit=${limit}`),
@@ -515,7 +586,8 @@ export const transactionsApi = {
   
   getOne: (id: number) => apiFetch<Transaction>(`/api/transactions/${id}`),
   
-  getStats: () => apiFetch<TransactionStats>('/api/transactions/stats'),
+  getStats: (query: TransactionQuery = {}) =>
+    apiFetch<TransactionStats>(`/api/transactions/stats${buildQueryString(query as Record<string, unknown>)}`),
   
   getByMember: (memberId: number, query: TransactionQuery = {}) =>
     apiFetch<PaginatedResponse<Transaction>>(
@@ -531,6 +603,132 @@ export const servicesApi = {
   getOne: (id: number) => apiFetch<Service>(`/api/services/${id}`),
   
   getStats: () => apiFetch<ServiceStats>('/api/services/stats'),
+};
+
+// Synced desktop tables without their own endpoint
+export const recordsApi = {
+  list: (entity: RecordEntity, query: PaginationQuery & { memberId?: number } = {}) =>
+    apiFetch<{ data: DesktopRow[]; total: number }>(
+      `/api/records/${entity}${buildQueryString(query as Record<string, unknown>)}`
+    ),
+};
+
+// Audit log: who changed what in the desktop app
+export interface AuditEntry {
+  /** Desktop audit_log id */
+  id: number;
+  actorUsername: string | null;
+  actorRole: string | null;
+  area: string;
+  action: string;
+  entityType: string | null;
+  entityId: number | null;
+  summary: string;
+  /** Usually { field: { from, to } } for what changed */
+  detail: unknown;
+  createdAt: string | null;
+  /** Website page of what it is about, when that is on the website */
+  link: string | null;
+}
+
+export interface AuditQuery extends PaginationQuery {
+  area?: string;
+  action?: string;
+  actor?: string;
+  search?: string;
+  entityType?: string;
+  entityId?: number;
+}
+
+export const auditLogApi = {
+  list: (query: AuditQuery = {}) =>
+    apiFetch<{ data: AuditEntry[]; total: number; page: number; limit: number }>(`/api/audit-log${buildQueryString(query as Record<string, unknown>)}`),
+
+  get: (id: number) => apiFetch<AuditEntry>(`/api/audit-log/${id}`),
+
+  filters: () => apiFetch<{ areas: string[]; actions: string[]; actors: string[] }>('/api/audit-log/filters'),
+};
+
+// Notifications (from desktop events) and Web Push
+export type NotificationType = 'payment' | 'package_changed' | 'start_date_changed';
+
+export const NOTIFICATION_TYPE_LABELS: Record<NotificationType, string> = {
+  payment: 'Payments',
+  package_changed: 'Package changes',
+  start_date_changed: 'Start date changes and renewals',
+};
+
+export interface AppNotification {
+  id: number;
+  type: NotificationType | string;
+  title: string;
+  body: string;
+  occurredAt: string;
+  read: boolean;
+  /** Cloud member id, when the member is on the website */
+  memberId: number | null;
+  /** Page the notification leads to */
+  url: string;
+  data: Record<string, unknown>;
+}
+
+export interface NotificationList {
+  data: AppNotification[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export interface PushDevice {
+  endpoint: string;
+  types: NotificationType[];
+  userAgent: string | null;
+  createdAt: string;
+  lastSuccessAt: string | null;
+}
+
+export const notificationsApi = {
+  list: (query: PaginationQuery & { unread?: boolean; type?: NotificationType } = {}) =>
+    apiFetch<NotificationList>(`/api/notifications${buildQueryString(query as Record<string, unknown>)}`),
+
+  unreadCount: () => apiFetch<{ count: number }>('/api/notifications/unread-count'),
+
+  markRead: (ids: number[]) =>
+    apiFetch<void>('/api/notifications/read', { method: 'POST', body: JSON.stringify({ ids }) }),
+
+  markAllRead: () => apiFetch<{ marked: number }>('/api/notifications/read-all', { method: 'POST' }),
+};
+
+export const pushApi = {
+  getConfig: () => apiFetch<{ enabled: boolean; publicKey: string | null }>('/api/push/config'),
+
+  devices: () => apiFetch<PushDevice[]>('/api/push/subscriptions'),
+
+  subscribe: (subscription: PushSubscriptionJSON, types?: NotificationType[]) =>
+    apiFetch<{ endpoint: string; types: NotificationType[] }>('/api/push/subscriptions', {
+      method: 'POST',
+      body: JSON.stringify({ ...subscription, types }),
+    }),
+
+  setTypes: (endpoint: string, types: NotificationType[]) =>
+    apiFetch<{ endpoint: string; types: NotificationType[] }>('/api/push/subscriptions', {
+      method: 'PATCH',
+      body: JSON.stringify({ endpoint, types }),
+    }),
+
+  /** authToken: for sign-out, which clears the stored token before this finishes */
+  unsubscribe: (endpoint: string, authToken?: string) =>
+    apiFetch<void>('/api/push/subscriptions/remove', {
+      method: 'POST',
+      body: JSON.stringify({ endpoint }),
+      headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
+    }),
+
+  test: (endpoint: string) =>
+    apiFetch<{ sent: number; failed: number }>('/api/push/test', {
+      method: 'POST',
+      body: JSON.stringify({ endpoint }),
+    }),
 };
 
 // Sync API
@@ -550,6 +748,30 @@ export const healthMetricsApi = {
 };
 
 // SMS API
+export type OutreachKind = 'absent' | 'inactive';
+
+export interface OutreachCandidate {
+  /** Website member id */
+  id: number;
+  fullName: string;
+  phoneNumber: string;
+  serviceName: string | null;
+  /** Days since last visit (absent) or since the membership ended (inactive) */
+  days: number;
+}
+
+export const smsOutreachApi = {
+  /** Members absent / inactive between minDays and maxDays (either end open when omitted). */
+  candidates: (kind: OutreachKind, minDays?: number, maxDays?: number) =>
+    apiFetch<OutreachCandidate[]>(`/api/sms/outreach${buildQueryString({ kind, minDays, maxDays })}`),
+
+  send: (kind: OutreachKind, memberIds: number[], minDays?: number, template?: string, maxDays?: number) =>
+    apiFetch<{ sent: number; skipped: number; campaignIds: string[] }>('/api/sms/outreach/send', {
+      method: 'POST',
+      body: JSON.stringify({ kind, memberIds, minDays, maxDays, template: template || undefined }),
+    }),
+};
+
 export const smsApi = {
   sendSingle: (phone: string, message: string, memberId?: number) =>
     apiFetch<SmsResponse>('/api/sms/send', {

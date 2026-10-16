@@ -5,9 +5,10 @@ import SmsSendModal from '@/components/admin/SmsSendModal';
 import SmsBulkForm from '@/components/admin/SmsBulkForm';
 import SmsBalanceCard from '@/components/admin/SmsBalanceCard';
 import SmsHistoryTable from '@/components/admin/SmsHistoryTable';
+import SmsOutreach from '@/components/admin/SmsOutreach';
 import { smsApi } from '@/lib/api';
 
-type Tab = 'send' | 'bulk' | 'history';
+type Tab = 'send' | 'bulk' | 'outreach' | 'history';
 
 export default function SmsPage() {
   const [activeTab, setActiveTab] = useState<Tab>('send');
@@ -16,6 +17,7 @@ export default function SmsPage() {
   const tabs: { id: Tab; label: string; icon: string }[] = [
     { id: 'send', label: 'Send SMS', icon: 'send' },
     { id: 'bulk', label: 'Bulk SMS', icon: 'campaign' },
+    { id: 'outreach', label: 'Absent & Inactive', icon: 'person_search' },
     { id: 'history', label: 'History', icon: 'history' },
   ];
 
@@ -78,6 +80,8 @@ export default function SmsPage() {
                 }}
               />
             )}
+
+            {activeTab === 'outreach' && <SmsOutreach />}
 
             {/* History Tab */}
             {activeTab === 'history' && <SmsHistoryTable />}

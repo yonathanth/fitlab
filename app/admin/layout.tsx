@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import Sidebar from '@/components/admin/Sidebar';
 import AccountDropdown from '@/components/admin/AccountDropdown';
+import NotificationBell from '@/components/admin/NotificationBell';
 import { syncApi } from '@/lib/api';
 
 function AdminLayoutContent({ children }: { children: React.ReactNode }) {
@@ -58,7 +59,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   };
 
   // Show loading state
-  if (isLoading) {
+  if (isLoading && !isLoginPage) {
     return (
       <div className="min-h-screen bg-background-dark flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
@@ -104,6 +105,11 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
                 <span className="material-symbols-outlined text-base sm:text-lg">sync</span>
                 <span>{formatLastSync(lastSyncTime)}</span>
               </div>
+
+              {/* Notifications; Suspense because the bell reads the URL (?notification=) */}
+              <Suspense fallback={null}>
+                <NotificationBell />
+              </Suspense>
 
               {/* Account dropdown */}
               <AccountDropdown />

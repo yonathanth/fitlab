@@ -11,11 +11,15 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: 'dashboard' },
+  { name: 'Notifications', href: '/admin/notifications', icon: 'notifications' },
   { name: 'Members', href: '/admin/members', icon: 'group' },
   { name: 'Attendance', href: '/admin/attendance', icon: 'fact_check' },
   { name: 'Staff', href: '/admin/staff', icon: 'badge' },
   { name: 'Transactions', href: '/admin/transactions', icon: 'payments' },
+  { name: 'Audit Log', href: '/admin/audit-log', icon: 'history' },
   { name: 'Services', href: '/admin/services', icon: 'category' },
+  { name: 'Catalog', href: '/admin/catalog', icon: 'inventory_2' },
+  { name: 'Schedule', href: '/admin/schedule', icon: 'calendar_month' },
   { name: 'Potential Customers', href: '/admin/potential-customers', icon: 'person_add' },
   { name: 'SMS', href: '/admin/sms', icon: 'sms' },
 ];

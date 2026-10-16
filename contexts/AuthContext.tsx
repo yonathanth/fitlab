@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { authApi, AdminProfile, ApiError } from '@/lib/api';
+import { disablePushOnSignOut } from '@/lib/push';
 
 interface AuthState {
   user: AdminProfile | null;
@@ -51,9 +52,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => clearTimeout(id);
   }, [checkAuth]);
 
+  // No isLoading here: the admin layout swaps in a spinner while it is set, which
+  // would unmount the login page and lose its error. The page shows its own spinner.
   const login = async (email: string, password: string) => {
-    setState(prev => ({ ...prev, isLoading: true }));
-    
     try {
       const response = await authApi.login(email, password);
       
@@ -67,7 +68,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading: false,
       });
     } catch (error) {
-      setState(prev => ({ ...prev, isLoading: false }));
       if (error instanceof ApiError) {
         throw new Error(error.message);
       }
@@ -76,6 +76,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = () => {
+    // This browser stops getting the admin's push notifications; runs on after sign-out.
+    void disablePushOnSignOut(localStorage.getItem('accessToken'));
     localStorage.removeItem('accessToken');
     localStorage.removeItem('user');
     setState({ user: null, isAuthenticated: false, isLoading: false });

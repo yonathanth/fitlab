@@ -12,8 +12,10 @@ import {
   Attendance,
   Transaction,
   HealthMetric,
+  MemberDetails,
   PaginatedResponse,
 } from '@/lib/api';
+import { formatDesktopDate, humanize, num, str } from '@/lib/desktop';
 import SmsSendModal from '@/components/admin/SmsSendModal';
 
 interface Props {
@@ -27,8 +29,9 @@ export default function MemberDetailPage({ params }: Props) {
   const [attendance, setAttendance] = useState<PaginatedResponse<Attendance> | null>(null);
   const [transactions, setTransactions] = useState<PaginatedResponse<Transaction> | null>(null);
   const [healthMetrics, setHealthMetrics] = useState<PaginatedResponse<HealthMetric> | null>(null);
+  const [details, setDetails] = useState<MemberDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'attendance' | 'transactions' | 'health'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'history' | 'attendance' | 'transactions' | 'health'>('overview');
   const [isSmsModalOpen, setIsSmsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -36,16 +39,22 @@ export default function MemberDetailPage({ params }: Props) {
       try {
         setIsLoading(true);
         const memberId = parseInt(id);
-        const [memberData, attendanceData, transactionsData, healthMetricsData] = await Promise.all([
+        const [memberData, attendanceData, transactionsData, healthMetricsData, detailsData] = await Promise.all([
           membersApi.getOne(memberId),
           attendanceApi.getByMember(memberId, { limit: 10 }),
           transactionsApi.getByMember(memberId, { limit: 10 }),
           healthMetricsApi.getByMember(memberId, { limit: 10 }),
+          // The page still works without these extras, e.g. against an older API.
+          membersApi.getDetails(memberId).catch((err) => {
+            console.error('Failed to fetch member details:', err);
+            return null;
+          }),
         ]);
         setMember(memberData);
         setAttendance(attendanceData);
         setTransactions(transactionsData);
         setHealthMetrics(healthMetricsData);
+        setDetails(detailsData);
       } catch (err) {
         console.error('Failed to fetch member:', err);
       } finally {
@@ -155,7 +164,7 @@ export default function MemberDetailPage({ params }: Props) {
       {/* Tabs */}
       <div className="border-b border-surface-dark-lighter">
         <nav className="flex gap-6">
-          {(['overview', 'attendance', 'transactions', 'health'] as const).map((tab) => (
+          {(['overview', 'history', 'attendance', 'transactions', 'health'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -322,6 +331,29 @@ export default function MemberDetailPage({ params }: Props) {
                   <p className="text-white">{formatDate(member.registrationDate)}</p>
                 </div>
               </div>
+              {details?.trainer && (
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-white/40">sports</span>
+                  <div>
+                    <p className="text-white/40 text-xs">Trainer</p>
+                    <p className="text-white">{details.trainer.fullName}</p>
+                  </div>
+                </div>
+              )}
+              {details?.group && (
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-white/40">groups</span>
+                  <div>
+                    <p className="text-white/40 text-xs">Group</p>
+                    <p className="text-white">
+                      {details.group.name}
+                      {details.group.joinedAt && (
+                        <span className="text-white/40 text-sm"> • since {formatDesktopDate(details.group.joinedAt)}</span>
+                      )}
+                    </p>
+                  </div>
+                </div>
+              )}
               {member.membershipTier && (
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-white/40">workspace_premium</span>
@@ -340,6 +372,33 @@ export default function MemberDetailPage({ params }: Props) {
               )}
             </div>
           </div>
+
+          {/* Linked members */}
+          {details && details.relations.length > 0 && (
+            <div className="bg-surface-dark rounded-xl border border-surface-dark-lighter p-6">
+              <h2 className="text-white font-semibold mb-4 flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary">family_restroom</span>
+                Linked Members
+              </h2>
+              <div className="space-y-3">
+                {details.relations.map((r, i) => (
+                  <div key={i} className="flex items-center justify-between">
+                    {r.member ? (
+                      <Link href={`/admin/members/${r.member.id}`} className="text-white hover:text-primary">
+                        {r.member.fullName}
+                      </Link>
+                    ) : (
+                      <span className="text-white/40">Member not synced</span>
+                    )}
+                    <span className="text-white/60 text-sm">
+                      {humanize(r.relation)}
+                      {r.note ? ` • ${r.note}` : ''}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Notes */}
           {member.notes && (
@@ -361,6 +420,138 @@ export default function MemberDetailPage({ params }: Props) {
               </h2>
               <p className="text-white/80">{member.remark}</p>
             </div>
+          )}
+        </div>
+      )}
+
+      {activeTab === 'history' && (
+        <div className="space-y-6">
+          {!details ? (
+            <div className="bg-surface-dark rounded-xl border border-surface-dark-lighter p-8 text-center text-white/40">
+              History is not available yet. It appears once the desktop app has synced with this version of the website.
+            </div>
+          ) : (
+            <>
+              {/* Add-ons */}
+              <div className="bg-surface-dark rounded-xl border border-surface-dark-lighter overflow-hidden">
+                <div className="p-4 border-b border-surface-dark-lighter">
+                  <h2 className="text-white font-semibold">Add-ons</h2>
+                  <p className="text-white/40 text-sm">{details.addons.length} subscriptions</p>
+                </div>
+                {details.addons.length === 0 ? (
+                  <div className="p-8 text-center text-white/40">No add-ons</div>
+                ) : (
+                  <div className="divide-y divide-surface-dark-lighter">
+                    {details.addons.map((a) => {
+                      const status = num(a.frozen) ? 'frozen' : str(a.status) ?? '-';
+                      return (
+                        <div key={a.id} className="p-4 flex items-center justify-between gap-4">
+                          <div>
+                            <p className="text-white">
+                              {a.addonName ?? 'Add-on'}
+                              {a.variantName && <span className="text-white/40"> • {a.variantName}</span>}
+                            </p>
+                            <p className="text-white/40 text-sm">
+                              {formatDesktopDate(a.start_date)} – {formatDesktopDate(a.end_date)}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <span className="inline-flex px-2 py-0.5 rounded text-xs font-medium capitalize bg-white/5 text-white/70">
+                              {status}
+                            </span>
+                            {num(a.price_paid) != null && (
+                              <p className="text-white/60 text-sm mt-1">{formatCurrency(num(a.price_paid) ?? 0)}</p>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Membership periods */}
+              <div className="bg-surface-dark rounded-xl border border-surface-dark-lighter overflow-hidden">
+                <div className="p-4 border-b border-surface-dark-lighter">
+                  <h2 className="text-white font-semibold">Membership Periods</h2>
+                  <p className="text-white/40 text-sm">{details.planHistory.length} periods</p>
+                </div>
+                {details.planHistory.length === 0 ? (
+                  <div className="p-8 text-center text-white/40">No periods recorded</div>
+                ) : (
+                  <div className="divide-y divide-surface-dark-lighter">
+                    {details.planHistory.map((p) => (
+                      <div key={p.id} className="p-4 flex items-center justify-between">
+                        <p className="text-white">{str(p.service_name) ?? 'Membership'}</p>
+                        <p className="text-white/60 text-sm">
+                          {formatDesktopDate(p.start_date)} – {formatDesktopDate(p.end_date)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Freezes */}
+              <div className="bg-surface-dark rounded-xl border border-surface-dark-lighter overflow-hidden">
+                <div className="p-4 border-b border-surface-dark-lighter">
+                  <h2 className="text-white font-semibold">Freezes</h2>
+                  <p className="text-white/40 text-sm">{details.freezeHistory.length} freezes</p>
+                </div>
+                {details.freezeHistory.length === 0 ? (
+                  <div className="p-8 text-center text-white/40">Never frozen</div>
+                ) : (
+                  <div className="divide-y divide-surface-dark-lighter">
+                    {details.freezeHistory.map((f) => (
+                      <div key={f.id} className="p-4 flex items-center justify-between gap-4">
+                        <div>
+                          <p className="text-white">
+                            {str(f.plan_name) ?? humanize(f.kind)}
+                            <span className="text-white/40 text-sm"> • {humanize(f.kind)}</span>
+                          </p>
+                          {str(f.reason) && <p className="text-white/40 text-sm">{str(f.reason)}</p>}
+                        </div>
+                        <p className="text-white/60 text-sm text-right">
+                          {formatDesktopDate(f.start_date)} –{' '}
+                          {f.ended_at
+                            ? formatDesktopDate(f.ended_at)
+                            : f.planned_until
+                              ? `until ${formatDesktopDate(f.planned_until)}`
+                              : 'ongoing'}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Drop-ins */}
+              {details.dropIns.length > 0 && (
+                <div className="bg-surface-dark rounded-xl border border-surface-dark-lighter overflow-hidden">
+                  <div className="p-4 border-b border-surface-dark-lighter">
+                    <h2 className="text-white font-semibold">Drop-in Visits</h2>
+                    <p className="text-white/40 text-sm">{details.dropIns.length} visits</p>
+                  </div>
+                  <div className="divide-y divide-surface-dark-lighter">
+                    {details.dropIns.map((d) => (
+                      <div key={d.id} className="p-4 flex items-center justify-between">
+                        <div>
+                          <p className="text-white">
+                            {d.serviceName ?? 'Drop-in'}
+                            {(num(d.quantity) ?? 1) > 1 && <span className="text-white/40"> × {num(d.quantity)}</span>}
+                          </p>
+                          <p className="text-white/40 text-sm">
+                            {formatDesktopDate(d.usage_date)}
+                            {str(d.trainer_name) ? ` • ${str(d.trainer_name)}` : ''}
+                          </p>
+                        </div>
+                        <span className="text-white/80">{formatCurrency(num(d.total_amount) ?? 0)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       )}
@@ -471,6 +662,11 @@ export default function MemberDetailPage({ params }: Props) {
                         <p className="text-white/40 text-sm">
                           {typeLabel} • {formatDate(transaction.transactionDate)} •{' '}
                           {transaction.paymentMethod || 'N/A'}
+                          {transaction.discountAmount
+                            ? ` • ${formatCurrency(transaction.discountAmount)} off${
+                                transaction.discountCode ? ` (${transaction.discountCode})` : ''
+                              }`
+                            : ''}
                         </p>
                       </div>
                     </div>
