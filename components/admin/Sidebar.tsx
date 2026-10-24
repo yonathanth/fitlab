@@ -15,6 +15,7 @@ const navItems: NavItem[] = [
   { name: 'Members', href: '/admin/members', icon: 'group' },
   { name: 'Attendance', href: '/admin/attendance', icon: 'fact_check' },
   { name: 'Staff', href: '/admin/staff', icon: 'badge' },
+  { name: 'Payroll', href: '/admin/payroll', icon: 'account_balance_wallet' },
   { name: 'Transactions', href: '/admin/transactions', icon: 'payments' },
   { name: 'Audit Log', href: '/admin/audit-log', icon: 'history' },
   { name: 'Services', href: '/admin/services', icon: 'category' },
